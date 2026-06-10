@@ -1,4 +1,29 @@
-margin-left: auto;
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雲端上的通霄 - D2C 與 OMO 地方創生電子商務藍圖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
             margin-right: auto;
             height: 320px;
             max-height: 360px;
@@ -926,7 +951,7 @@ margin-left: auto;
     </div> <!-- 🌟 結束內容分層包裹容器 -->
 
     <!-- 👤 互動式會員中心浮動視窗 (Member Portal Modal) -->
-    <div id="memberModal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="memberModal" class="fixed inset-0 hidden pointer-events-none z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <!-- 遮罩背景 -->
         <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm pointer-events-auto" onclick="closeMemberModal()"></div>
         
@@ -1698,12 +1723,9 @@ margin-left: auto;
             const modal = document.getElementById('memberModal');
             const modalContent = document.getElementById('memberModalContent');
 
-            // 修正：Modal 平時必須 hidden，否則透明遮罩仍可能蓋住整頁，造成連結無法點擊
             modal.classList.remove('hidden');
-            modal.classList.remove('pointer-events-none');
-            modal.classList.add('pointer-events-auto');
-
             requestAnimationFrame(() => {
+                modal.classList.remove('pointer-events-none');
                 modal.classList.add('opacity-100');
                 modalContent.classList.remove('translate-y-4');
                 modalContent.classList.add('translate-y-0');
@@ -1718,17 +1740,13 @@ margin-left: auto;
             const modal = document.getElementById('memberModal');
             const modalContent = document.getElementById('memberModalContent');
 
-            modal.classList.remove('opacity-100');
-            modal.classList.remove('pointer-events-auto');
             modal.classList.add('pointer-events-none');
+            modal.classList.remove('opacity-100');
             modalContent.classList.remove('translate-y-0');
             modalContent.classList.add('translate-y-4');
 
-            // 等淡出動畫結束後再 hidden，確保不再攔截任何點擊
-            setTimeout(() => {
-                if (!modal.classList.contains('opacity-100')) {
-                    modal.classList.add('hidden');
-                }
+            window.setTimeout(() => {
+                modal.classList.add('hidden');
             }, 300);
         }
 
@@ -1848,52 +1866,135 @@ margin-left: auto;
             generateCaptchaCode();
         }
 
+        // ✅ GitHub Pages 版：Gemini AI 包裝函式
+        // 若使用者未填 API Key，會自動回傳模擬內容，避免按鈕因 ReferenceError 失效。
+        async function fetchGeminiAI(prompt, systemInstruction = '') {
+            const keyInput = document.getElementById('globalApiKey');
+            const apiKey = keyInput ? keyInput.value.trim() : '';
 
-        /* --- 補強互動函式：避免 onclick 呼叫不存在函式時造成按鈕失效 --- */
-        if (typeof triggerAiRecipe !== 'function') {
-            function triggerAiRecipe() {
-                const result = document.getElementById('aiRecipeResult');
-                if (!result) return;
-                result.classList.remove('hidden');
-                result.innerText = '✨ AI 旬味食譜推薦：彩虹玉米可做成奶油烤玉米或玉米濃湯，搭配牧草蛋製成溫泉蛋沙拉，再以滴雞精作為湯底，形成兼具營養與在地風味的初夏餐桌。';
+            if (!apiKey) {
+                return generateMockAIResponse(prompt);
+            }
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [{ text: `${systemInstruction}\n\n${prompt}` }]
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Gemini API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data?.candidates?.[0]?.content?.parts?.[0]?.text || generateMockAIResponse(prompt);
+            } catch (error) {
+                console.warn('Gemini API 呼叫失敗，已改用模擬回覆：', error);
+                return generateMockAIResponse(prompt);
             }
         }
 
-        if (typeof triggerAiBlessing !== 'function') {
-            function triggerAiBlessing() {
-                const result = document.getElementById('aiBlessingResult');
-                if (!result) return;
-                result.classList.remove('hidden');
-                result.innerText = '願白沙屯媽祖護佑您一路平安，讓通霄土地的豐收與溫暖，隨這份農產主題箱抵達您的餐桌。';
+        function generateMockAIResponse(prompt) {
+            if (prompt.includes('食譜')) {
+                return `【通霄旬味食譜推薦】\n\n推薦料理：彩虹玉米牧草蛋蒸蛋\n\n作法：將牧草蛋打散，加入滴雞精與少量水拌勻，再放入切粒的彩虹玉米，蒸約 12 分鐘即可。這道料理能呈現玉米的甜、雞蛋的香與滴雞精的厚度，適合親子家庭與日常養生。`;
+            }
+            if (prompt.includes('祝禱')) {
+                return `願白沙屯媽祖的溫柔守護，陪伴你把通霄土地的豐收帶回家。願每一次選擇在地好物，都是對小農的一份支持，也為生活添一份平安與踏實。`;
+            }
+            if (prompt.includes('行銷文案') || prompt.includes('文案')) {
+                return `【雲端上的通霄｜產地故事文案】\n\n這不只是一份農產組合，而是一段從土地出發的承諾。從職人的堅持、家族的傳承，到每一口安心的旬味，通霄把最真實的風土送到你家。現在訂閱一期一會主題箱，讓支持地方創生變成日常生活的一部分。`;
+            }
+            return `阿通伯收到你的問題了！這個平台以 D2C 自建商城串連通霄小農、在地故事與 OMO 觀光節點，讓消費者能看見產地、理解職人，並用訂閱制支持地方永續。`;
+        }
+
+        async function triggerAiRecipe() {
+            const result = document.getElementById('aiRecipeResult');
+            const btn = document.getElementById('recipeBtn');
+            if (!result) return;
+
+            result.classList.remove('hidden');
+            result.textContent = 'AI 正在為您搭配旬味食譜...';
+            if (btn) btn.disabled = true;
+
+            const reply = await fetchGeminiAI('請產生一份使用五北里彩虹玉米、坪頂牧草蛋、標裕滴雞精與福興茂谷柑的通霄旬味食譜。');
+            result.textContent = reply;
+
+            if (btn) btn.disabled = false;
+        }
+
+        async function triggerAiBlessing() {
+            const result = document.getElementById('aiBlessingResult');
+            const btn = document.getElementById('blessingBtn');
+            if (!result) return;
+
+            result.classList.remove('hidden');
+            result.textContent = 'AI 正在生成平安祝禱文...';
+            if (btn) btn.disabled = true;
+
+            const reply = await fetchGeminiAI('請產生一段帶有白沙屯媽祖信仰、通霄在地農產與平安祝福感的祝禱文。');
+            result.textContent = reply;
+
+            if (btn) btn.disabled = false;
+        }
+
+        function simulateShare(platform) {
+            const coupon = document.getElementById('couponResult');
+            const buttons = document.getElementById('shareButtonsContainer');
+
+            if (coupon) coupon.classList.remove('hidden');
+            if (buttons) buttons.classList.add('hidden');
+
+            const shareText = encodeURIComponent('我剛剛訂閱了 #雲端通霄 的一期一會主題箱！支持通霄在地小農與地方創生。');
+            const shareUrl = encodeURIComponent(window.location.href);
+
+            if (platform === 'fb') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank');
+            } else if (platform === 'line') {
+                window.open(`https://social-plugins.line.me/lineit/share?url=${shareUrl}&text=${shareText}`, '_blank');
             }
         }
 
-        if (typeof simulateShare !== 'function') {
-            function simulateShare(platform) {
-                const coupon = document.getElementById('couponResult');
-                if (coupon) coupon.classList.remove('hidden');
-            }
+        async function generateArtisanAdCopy() {
+            const result = document.getElementById('aiArtisanAdResult');
+            const btn = document.getElementById('artisanAdBtn');
+            const product = document.getElementById('aiStoryProduct')?.value || '通霄在地農產組合';
+            const tone = document.getElementById('aiStoryTone')?.value || '溫暖感性';
+
+            if (!result) return;
+
+            result.classList.remove('hidden');
+            result.textContent = 'AI 正在生成行銷文案...';
+            if (btn) btn.disabled = true;
+
+            const reply = await fetchGeminiAI(`請為「${product}」撰寫一篇社群行銷文案，語氣為：${tone}。`);
+            result.textContent = reply;
+
+            if (btn) btn.disabled = false;
         }
 
-        if (typeof processCheckout !== 'function') {
-            function processCheckout() {
+        function processCheckout() {
+            const payBtn = document.getElementById('payBtn');
+            if (payBtn) {
+                payBtn.disabled = true;
+                payBtn.innerHTML = '處理中...';
+            }
+
+            window.setTimeout(() => {
                 goToStep(3);
-            }
-        }
-
-        if (typeof resetWizard !== 'function') {
-            function resetWizard() {
-                goToStep(1);
-            }
-        }
-
-        if (typeof generateArtisanAdCopy !== 'function') {
-            function generateArtisanAdCopy() {
-                const result = document.getElementById('aiArtisanAdResult');
-                if (!result) return;
-                result.classList.remove('hidden');
-                result.innerText = '【通霄旬味聯名提案】從在地職人的堅持出發，將安心農產與地方故事一起送上餐桌。這不只是購買一份產品，而是支持一座小鎮持續被看見。';
-            }
+                if (payBtn) {
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '確認授權並扣款 <i data-lucide="wallet" class="w-4 h-4"></i>';
+                    if (window.lucide) lucide.createIcons();
+                }
+            }, 700);
         }
 
     </script>
