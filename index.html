@@ -99,7 +99,8 @@
          4. Artisan Heritage Hall (#stories): A deeply engaging narrative panel detailing the authentic stories of producers like Wei Qu-shun of Biao Yu Ranch and the 3J Orchard triplet brothers, now equipped with a powerful Gemini-powered AI Co-branding Marketing copywriter to fuel the community flywheel.
          5. Crop Digital Twin (Traceability): Interactive switcher showcasing microclimate sensor data and temporal growth tracking.
          6. "一期一會" Subscription Checkout: 3-step dynamic wizard with Gemini AI recipe generation, newly added dynamic coupon code validator block, and custom social sharing.
-         7. AI Agent Chat Widget: Fully functional mock and true API client supporting standard/custom queries about the regional economy. -->
+         7. AI Agent Chat Widget: Fully functional mock and true API client supporting standard/custom queries about the regional economy.
+         8. Member Portal Modal (#memberModal): Fully functional interactive member login with graphic security captcha generator and live order/delivery tracking panel. -->
     <!-- Visualization & Content Choices: 
          - Demographic Data -> Goal: Shock/Awareness -> Doughnut Chart (Chart.js) -> Dynamic Hover tooltips.
          - Subscription LTV Growth -> Goal: Prove Model Sustainability -> Interactive Line Chart (Chart.js) showing cumulative values.
@@ -141,9 +142,9 @@
                         <a href="#traceability" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">作物溯源</a>
                         <a href="#subscription" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">主題箱訂閱</a>
                         <a href="#omomap" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">OMO地圖</a>
-                        <a href="#chatbot" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all flex items-center gap-1">
-                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> 阿通伯 AI
-                        </a>
+                        <button onclick="openMemberModal()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all flex items-center gap-1">
+                            <i data-lucide="user" class="w-3.5 h-3.5"></i> 會員中心
+                        </button>
                     </div>
                 </div>
             </div>
@@ -163,7 +164,8 @@
                 帶著媽祖的祝福，<br/>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500">把通霄好物帶回家</span>
             </h1>
-            <p class="text-xl md:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
+            <!-- 🌟 修正字體大小：由 text-xl md:text-2xl 微調小大約 2pt 的 text-lg md:text-xl -->
+            <p class="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
                 通霄的人（產地故事）、地（百萬進香人潮）、物（認證農產）在此完美交織。<br/>
                 我們建立的不只是一套購物車，而是翻轉高齡化農業鎮宿命的數位信任生態系。
             </p>
@@ -316,7 +318,7 @@
                     <div class="lg:col-span-2 bg-white/90 backdrop-blur p-8 rounded-[36px] border border-stone-200/80 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
                             <div>
-                                <h3 class="text-2xl font-black text-stone-900">預測累積 LTV 價值成長 (12個月)</h3>
+                                <h3 class="text-xl font-black text-stone-900">預測累積 LTV 價值成長 (12個月)</h3>
                                 <p class="text-sm text-stone-400 mt-1">「一期一會主題箱」訂閱制模擬預測</p>
                             </div>
                             <div class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs font-bold">
@@ -370,21 +372,21 @@
                     <button onclick="selectStory('threej', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">🍐</span>
                         <div>
-                            <h4 class="font-black text-sm text-stone-800">3J果園 三胞胎兄弟</h4>
+                            <h4 class="font-black text-xs text-stone-400">3J果園 三胞胎兄弟</h4>
                             <span class="text-xs text-stone-400 font-bold">老欉文旦的傳承故事</span>
                         </div>
                     </button>
                     <button onclick="selectStory('wenabo', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">👨‍🌾</span>
                         <div>
-                            <h4 class="font-black text-sm text-stone-800">五北社區 溫阿伯</h4>
+                            <h4 class="font-black text-xs text-stone-400">五北社區 溫阿伯</h4>
                             <span class="text-xs text-stone-400 font-bold">四十年的彩虹守護者</span>
                         </div>
                     </button>
                     <button onclick="selectStory('pingding', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">🥚</span>
                         <div>
-                            <h4 class="font-black text-sm text-stone-800">坪頂社區 鳳凰小農</h4>
+                            <h4 class="font-black text-xs text-stone-400">坪頂社區 鳳凰小農</h4>
                             <span class="text-xs text-stone-400 font-bold">陡峭山坡的放牧生態蛋</span>
                         </div>
                     </button>
@@ -447,7 +449,7 @@
                     <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/20 rounded-full blur-2xl"></div>
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">✨</span>
-                        <h3 class="text-xl font-black text-emerald-950">AI 小農聯名行銷文案產生器 (社群導流飛輪)</h3>
+                        <h3 class="text-lg font-black text-emerald-950">AI 小農聯名行銷文案產生器 (社群導流飛輪)</h3>
                     </div>
                     <p class="text-sm md:text-base text-emerald-800 leading-relaxed font-medium">
                         我們自建的 D2C 品牌商城需要源源不絕的社群聲量。本工具利用 Gemini AI 實時編織職人的心血故事，一鍵將「產地價值與傳承精神」轉化為社群（FB / IG）爆款導流貼文，點燃社群裂變飛輪！
@@ -655,7 +657,7 @@
                                     </button>
                                 </div>
                                 <!-- AI Recipe Result Panel -->
-                                <div id="aiRecipeResult" class="hidden mt-6 pt-6 border-t border-white/10 text-sm md:text-base text-emerald-50 bg-white/5 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">
+                                <div id="aiRecipeResult" class="hidden mt-6 pt-6 border-t border-white/10 text-sm md:text-base text-emerald-50 bg-white/5 p-4 rounded-xl leading-relaxed whitespace-pre-wrap font-medium">
                                     <!-- Content dynamically populated -->
                                 </div>
                             </div>
@@ -816,19 +818,19 @@
                     </h3>
                     <div class="relative w-full aspect-[4/3] bg-stone-100 rounded-3xl border border-stone-200 overflow-hidden shadow-inner">
                         <!-- Spot 1: White Sand Temple -->
-                        <button onclick="selectOmoSpot('temple', this)" class="absolute top-[15%] left-[25%] p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
+                        <button onclick="selectOmoSpot('temple', this)" class="absolute top-[15%] left-[25%] p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
                             ⛩️ 白沙屯拱天宮
                         </button>
                         <!-- Spot 2: Flying Cow Ranch -->
-                        <button onclick="selectOmoSpot('ranch', this)" class="absolute top-[60%] left-[60%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
+                        <button onclick="selectOmoSpot('ranch', this)" class="absolute top-[60%] left-[60%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
                             🐄 飛牛牧場
                         </button>
                         <!-- Spot 3: Salt Factory -->
-                        <button onclick="selectOmoSpot('salt', this)" class="absolute top-[35%] left-[45%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
+                        <button onclick="selectOmoSpot('salt', this)" class="absolute top-[35%] left-[45%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
                             🧂 臺鹽通霄精鹽廠
                         </button>
                         <!-- Spot 4: Historic Trail -->
-                        <button onclick="selectOmoSpot('trail', this)" class="absolute top-[75%] left-[30%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
+                        <button onclick="selectOmoSpot('trail', this)" class="absolute top-[75%] left-[30%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
                             🚶 挑鹽古道
                         </button>
                         <div class="absolute bottom-4 left-4 bg-white/80 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-400">
@@ -953,6 +955,126 @@
 
     </div> <!-- 🌟 結束內容分層包裹容器 -->
 
+    <!-- 👤 互動式會員中心浮動視窗 (Member Portal Modal - New Feature) -->
+    <div id="memberModal" class="fixed inset-0 pointer-events-none z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <!-- 遮罩背景 -->
+        <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm pointer-events-auto" onclick="closeMemberModal()"></div>
+        
+        <!-- 登入面板容器 -->
+        <div class="bg-white/95 backdrop-blur rounded-[40px] shadow-2xl border border-stone-200 max-w-md w-full p-8 md:p-10 pointer-events-auto transform translate-y-4 transition-transform duration-300 relative" id="memberModalContent">
+            <!-- 關閉按鈕 -->
+            <button onclick="closeMemberModal()" class="absolute top-6 right-6 text-stone-400 hover:text-stone-800 transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- 1. 會員登入畫面 (Login View) -->
+            <div id="memberLoginView" class="space-y-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="lock" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-stone-900">歡迎回到雲端通霄</h3>
+                    <p class="text-sm text-stone-400 mt-1">請輸入您的帳號密碼進行安全驗證</p>
+                </div>
+
+                <!-- 登入表單 -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-stone-400 mb-2 uppercase">電子信箱 / 手機號碼</label>
+                        <div class="relative">
+                            <input type="text" id="memberAccount" placeholder="user@tongxiao.farm 或手機號" class="w-full bg-stone-50 border border-stone-200 rounded-2xl px-4 py-3.5 text-base focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <span class="absolute right-4 top-4 text-stone-300"><i data-lucide="mail" class="w-5 h-5"></i></span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-stone-400 mb-2 uppercase">登入密碼</label>
+                        <div class="relative">
+                            <input type="password" id="memberPassword" placeholder="請輸入密碼 (預設: 123456)" class="w-full bg-stone-50 border border-stone-200 rounded-2xl px-4 py-3.5 text-base focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <span class="absolute right-4 top-4 text-stone-300"><i data-lucide="key-round" class="w-5 h-5"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- 驗證碼區塊 (Dynamic Captcha Component) -->
+                    <div>
+                        <label class="block text-sm font-bold text-stone-400 mb-2 uppercase">安全圖形驗證碼</label>
+                        <div class="flex gap-4 items-center">
+                            <!-- 繪製驗證碼畫布 -->
+                            <canvas id="captchaCanvas" width="130" height="48" class="bg-stone-200 rounded-xl border border-stone-300 shadow-inner cursor-pointer" title="點擊更換驗證碼" onclick="generateCaptchaCode()"></canvas>
+                            <button onclick="generateCaptchaCode()" class="p-3 bg-stone-100 hover:bg-stone-200 rounded-xl text-stone-500 transition-colors" title="重新整理">
+                                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                            </button>
+                            <input type="text" id="captchaInput" placeholder="輸入4位碼" class="flex-1 bg-stone-50 border border-stone-200 rounded-2xl px-4 py-3 text-base text-center font-mono font-black uppercase focus:ring-2 focus:ring-emerald-500 outline-none tracking-widest">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 錯誤訊息容器 -->
+                <p id="loginErrorMessage" class="text-sm font-bold text-red-500 hidden text-center"></p>
+
+                <button onclick="submitMemberLogin()" id="loginSubmitBtn" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-black text-base flex justify-center items-center gap-2 transition-all shadow-md shadow-emerald-100">
+                    登入會員中心 <i data-lucide="log-in" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- 2. 會員個人儀表板畫面 (Dashboard View - Hidden until logged in) -->
+            <div id="memberDashboardView" class="hidden space-y-6 animate-in fade-in duration-300">
+                <div class="flex items-center gap-4 border-b border-stone-100 pb-4">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg">
+                        通
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-black text-stone-900" id="dashMemberName">李靜嫻</h4>
+                        <span class="px-3 py-1 bg-amber-100 border border-amber-200 text-amber-800 rounded-full text-xs font-black inline-block mt-1">
+                            🌸 白沙屯守護大使
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 訂閱箱實時狀態卡 -->
+                <div class="space-y-4">
+                    <h5 class="text-sm font-bold text-stone-400 uppercase tracking-widest">我的 D2C 訂閱箱狀態</h5>
+                    <div class="p-5 bg-stone-50 border border-stone-200 rounded-3xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-black text-stone-800">月月保平安主題箱</span>
+                            <span class="text-xs font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">配送中 🚚</span>
+                        </div>
+                        <!-- 物流實時感測狀態 -->
+                        <div class="grid grid-cols-2 gap-4 text-xs font-bold text-stone-500 pt-2 border-t border-stone-200/60">
+                            <div>
+                                <p class="text-stone-400">目前冷鏈車溫</p>
+                                <p class="text-base text-stone-800 mt-0.5">4.2 °C (穩定)</p>
+                            </div>
+                            <div>
+                                <p class="text-stone-400">預計送達日期</p>
+                                <p class="text-base text-stone-800 mt-0.5">今日 16:30 抵達</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 行銷飛輪折扣回饋 -->
+                <div class="p-5 bg-amber-50/50 border border-amber-100 rounded-3xl space-y-2">
+                    <div class="flex items-center gap-2 text-amber-800">
+                        <i data-lucide="ticket" class="w-5 h-5 text-amber-600"></i>
+                        <h5 class="text-sm font-black">行銷飛輪折抵券</h5>
+                    </div>
+                    <p class="text-xs text-amber-700 leading-relaxed font-bold">
+                        您已成功綁定【TONGXIAO50】優惠，下期扣款自動抵扣 50 NTD！感謝您向白沙屯信眾推廣。
+                    </p>
+                </div>
+
+                <!-- 功能操作 -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="quickNavigate('subscription'); closeMemberModal();" class="py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-sm font-black transition-all">變更方案</button>
+                    <button onclick="submitMemberLogout()" class="py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-sm font-black flex justify-center items-center gap-1 transition-all">
+                        安全登出 <i data-lucide="log-out" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <!-- JavaScript Business Logic -->
     <script>
         // Global variables & database
@@ -964,6 +1086,10 @@
         // Dynamic promo pricing variables
         let appliedDiscount = 0;
         let currentPromoCode = '';
+
+        // 會員登入相關狀態量
+        let memberIsLoggedIn = false;
+        let generatedCaptcha = "";
 
         const cropsDb = {
             corn: {
@@ -1049,7 +1175,7 @@
                 quote: "「想起因癌症病過世的家父，心中便有一股使命感，驅使我堅持下去飼養【健康、安全、美味】的土雞。」",
                 text: "民國八十四年間回到苗栗鄉下，接下父親養殖雞隻副業並積極參加各種農業培訓及安全農業講習。期間家父罹癌過世並經數年研究飼養，於民國九十年取得全國第一家經政府認證的土雞養殖牧場，進而推出「健康放走雞」系列雞肉產品。隔年，為使產品更健康，推出全國第一家１００％全程使用天然植物性飼糧的「吃『素』土雞」，並把阿嬤養雞的味道找回來。民國九十六年亦取得產銷履歷認證。這些年間，由不懂到獲得消費大眾信任期間，嚐盡不少苦頭及財務問題，一度心灰意冷，萌生退意。但想起因病過世的家父，心中便有一股使命感，趨使我堅持下去飼養【健康、安全、美味】的土雞，讓更多消費大眾能吃得更健康、安心。",
                 milestones: [
-                    { year: "民國 84 年", event: "返鄉承接副業" },
+                    { year: "民國 84 年", event: "返鄉承接父業" },
                     { year: "民國 90 年", event: "首家政府認證土雞場" },
                     { year: "民國 91 年", event: "推動吃素土雞" }
                 ]
@@ -1112,7 +1238,7 @@
             salt: {
                 title: "臺鹽通霄精鹽廠 OMO 節點",
                 scan: "精鹽廠為遊客家庭聚會重要觀光區。在鹽來館及海洋溫泉泡腳溪旁部署 OMO 節點，引導參觀者探索並訂閱包含通霄鹽滷豆花、越光米及新鮮茂谷柑的主題箱。",
-                comm: "利用實體精鹽廠的高大眾流量優勢，吸引大量新會員綁定。線上回購佣金自動分潤，並共同開發精鹽廠專屬特產品。",
+                comm: "利用實體精鹽廠的高大眾流量遊勢，吸引大量新會員綁定。線上回購佣金自動分潤，並共同開發精鹽廠專屬特產品。",
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=臺鹽通霄精鹽廠"
             },
             trail: {
@@ -1463,200 +1589,6 @@
             lucide.createIcons();
         }
 
-        // Promo Code Verification logic
-        function applyPromoCode() {
-            const codeInput = document.getElementById('promoInput');
-            const msg = document.getElementById('promoMessage');
-            if (!codeInput || !msg) return;
-
-            const code = codeInput.value.trim().toUpperCase();
-
-            if (code === 'TONGXIAO50') {
-                appliedDiscount = 50;
-                currentPromoCode = code;
-                msg.innerText = '🎉 優惠碼套用成功！已為您折抵 NT$ 50 元。';
-                msg.className = 'text-[10px] font-bold mt-2 text-emerald-600';
-                msg.classList.remove('hidden');
-                
-                // 重新渲染 Step 2 價格明細
-                goToStep(2);
-            } else if (code === '') {
-                msg.innerText = '請輸入優惠代碼。';
-                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
-                msg.classList.remove('hidden');
-            } else {
-                msg.innerText = '❌ 無效的優惠代碼，請重新輸入。';
-                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
-                msg.classList.remove('hidden');
-            }
-        }
-
-        function processCheckout() {
-            const payBtn = document.getElementById('payBtn');
-            payBtn.innerText = '安全加密金流傳輸中...';
-            payBtn.disabled = true;
-            setTimeout(() => {
-                goToStep(3);
-                payBtn.innerText = '確認授權並扣款';
-                payBtn.disabled = false;
-            }, 1800);
-        }
-
-        function resetWizard() {
-            appliedDiscount = 0;
-            currentPromoCode = '';
-            const promoInput = document.getElementById('promoInput');
-            const promoMsg = document.getElementById('promoMessage');
-            if (promoInput) promoInput.value = '';
-            if (promoMsg) promoMsg.classList.add('hidden');
-
-            goToStep(1);
-            document.getElementById('aiRecipeResult').classList.add('hidden');
-            document.getElementById('aiBlessingResult').classList.add('hidden');
-            document.getElementById('couponResult').classList.add('hidden');
-            document.getElementById('shareButtonsContainer').classList.remove('hidden');
-        }
-
-        // Gemini API Implementation with Exponential Backoff
-        async function fetchGeminiAI(prompt, sysInstruction = "") {
-            const inputKey = document.getElementById('globalApiKey').value.trim();
-            const activeKey = inputKey || apiKey;
-            if (!activeKey) {
-                // Returns smart mock if no key provided
-                return simulateLocalAI(prompt);
-            }
-
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }]
-            };
-            if (sysInstruction) {
-                payload.systemInstruction = { parts: [{ text: sysInstruction }] };
-            }
-
-            let currentDelay = 1000;
-            for (let i = 0; i < 5; i++) {
-                try {
-                    const res = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!res.ok) throw new Error("API call error");
-                    const data = await res.json();
-                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，阿通伯暫時無法取得答覆。";
-                } catch (err) {
-                    if (i === 4) return "系統連線逾時，自動切換至在地創生模擬引擎回覆：\n\n" + await simulateLocalAI(prompt);
-                    await new Promise(r => setTimeout(r, currentDelay));
-                    currentDelay *= 2;
-                }
-            }
-        }
-
-        // Gemini API Feature: Ad Copywriter Generation
-        async function generateArtisanAdCopy() {
-            const product = document.getElementById('aiStoryProduct').value;
-            const tone = document.getElementById('aiStoryTone').value;
-            const btn = document.getElementById('artisanAdBtn');
-            const resultPanel = document.getElementById('aiArtisanAdResult');
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class="animate-spin"><i data-lucide="loader-2" class="w-4 h-4"></i></i> 正在編織品牌故事...`;
-            lucide.createIcons();
-
-            const prompt = `請為通霄 D2C 品牌商城撰寫一篇社群行銷宣傳貼文。
-主打聯名產品組合：${product}
-期望文案風格與語調：${tone}
-請結合以下通霄職人故事脈絡：
-- 標裕牧場魏趨順大哥，承接罹癌過世父親的「健康放走雞」信念，研發首創100%吃素土雞。
-- 3J果園三胞胎兄弟接棒傳承自民國73年父親手植的第一株老欉文旦柚。
-- 五北里溫阿伯堅持守護40年黑糯彩虹玉米。
-- 坪頂社區鳳凰放牧蛋產銷班在乾旱山坡地低密度放養，與石虎生態保育共榮。
-
-貼文格式要求：
-1. 吸引目光的感性大標題
-2. 層次感豐富的故事與產品關聯導入
-3. 誠摯邀請大家預定或訂閱「一期一會主題箱」，並說明分享至社群能解鎖「下期自動抵抵折扣 50 元」的優惠券碼【TONGXIAO50】。
-4. 加上合適的社群 Hashtags。請用溫暖人心的繁體中文撰寫，字數約 300-400 字。`;
-
-            const sysInstruction = "你是一位擅長寫熱銷地方創生、文創與小農情感品牌故事的頂級行銷企劃與文案總監，筆觸細膩、有畫面感、且充滿轉化力。";
-            
-            const resText = await fetchGeminiAI(prompt, sysInstruction);
-            resultPanel.innerText = resText;
-            resultPanel.classList.remove('hidden');
-            btn.disabled = false;
-            btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ✨ 一鍵生成黃金行銷文案`;
-            lucide.createIcons();
-        }
-
-        // Intelligent local simulation fallback (Updated with Order, Subscription, Contact, Coupon and Ad Copy info)
-        function simulateLocalAI(prompt) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    if (prompt.includes("食譜")) {
-                        resolve("👨‍🌾 阿通伯推薦料理：【初夏通霄彩虹玉米排骨鮮湯】\n\n食材：五北里彩虹玉米1根、坪頂牧草蛋2顆、排骨半斤。\n做法：\n1. 將彩虹玉米切段，排骨洗淨汆燙。\n2. 將排骨與彩虹玉米冷水下鍋，大火煮滾後轉小火燉煮35分鐘，鎖住玉米天然花青素風味。\n3. 起鍋前打入坪頂牧草蛋花，增添滑順蛋香，最後加少許鹽調味即可享用！\n風味特色：彩虹玉米口感香Q有彈性，配合新鮮牧草蛋，是一道蘊含通霄風土甘甜味的清爽湯品！");
-                    } else if (prompt.includes("祝禱")) {
-                        resolve("🌸 白沙屯拱天宮媽祖專屬祝禱文：\n\n弟子/信女 敬捧通霄大地恩賜，誠心拜謝白沙屯天上聖母。願媽祖慈悲，保佑您與家人身心安康、闔家平安。願此份來自通霄純淨風土的一期一會禮盒，滋養您的身體，帶著神明溫暖的守護，生活順心、事業如意。保庇平安！");
-                    } else if (prompt.includes("社群行銷宣傳貼文")) {
-                        resolve(`🌸 【帶著媽祖的祝福，把通霄溫暖美味帶回家】 🌸\n\n「民國73年11月23日，父親在南和社區種下第一株柚子樹；魏趨順大哥想起罹癌過世的家父，發誓要養出最健康的吃素放走雞...」\n\n今年中秋，通霄最溫暖的兩個傳承職人聯名了！3J果園的三胞胎兄弟承接了父親的老欉柚子，與全台首家產銷履歷驗證的標裕牧場攜手，推出期間限定【老欉文旦 × 吃素放走雞滴雞精】祈福禮盒。🎁\n\n每一顆柚子，都飽含了40年的家族堅持；每一滴雞精，都是對健康美味的使命守護。這份禮盒更特別帶到白沙屯拱天宮「代客過爐」，讓媽祖的保庇溫暖您與家人的心。\n\n✨ 誠摯推薦您加入「一期一會主題箱」月配訂閱！現在訂閱並分享，使用專屬優惠碼【TONGXIAO50】立折 50 元，支持返鄉小農，守護地方永續！\n\n#雲端通霄 #D2C品牌電商 #3J果園 #標裕牧場 #白沙屯媽祖 #地方創生 #吃素土雞 #老欉文旦`);
-                    } else if (prompt.includes("魏趨順") || prompt.includes("土雞") || prompt.includes("放走雞")) {
-                        resolve("🐔 關於標裕牧場魏趨順大哥：他是全國第一家取得產銷履歷與政府認證的土雞達人。他研發的100%「吃素土雞」，不投抗生素、無化學添加，找回了阿嬤年代那口最純粹、最天然的健康雞肉味與香濃滴雞精！");
-                    } else if (prompt.includes("3J") || prompt.includes("文旦") || prompt.includes("三胞胎") || prompt.includes("果園")) {
-                        resolve("🍐 關於通霄南和【3J果園】：這是由三胞胎兄弟在民國102年回到家鄉共同創立的品牌。承接了父親在民國73年種下的第一顆老欉柚子樹，堅持自然農法與自產自銷，用心栽培出甘甜多汁、充滿家族愛與責任的文旦及多品種柑橘！");
-                    } else if (prompt.includes("甜度")) {
-                        resolve("🌽 彩虹玉米的甜度通常在 14-16 Brix。與一般超甜玉米不同，彩虹玉米黑黃紅相間，蘊含高天然花青素，它最厲害的是其Q彈飽滿的齒頰嚼勁，甜中帶有高雅的穀物香氣！");
-                    } else if (prompt.includes("分潤")) {
-                        resolve("⛩️ 我們的 OMO 虛實融合機制非常先進！當遊客在白沙屯拱天宮現場掃描商家的特製 QR Code 並綁定，遊客回家後在線上訂閱的每筆自動扣款訂單，系統都將透過分潤算法將 10% 佣金自動回饋發送給該店家。這真正實現了遊客離店不斷線，扶持在地實體經濟！");
-                    } else if (prompt.includes("補償")) {
-                        resolve("🛡️ 氣候補償機制是我們的 D2C 品牌責任感體現。農業往往深受極端氣候影響。當天災導致彩虹玉米等歉收時，我們主動保障消費者與小農。我們會將生鮮替換為等值的在地加工品（例如標裕滴雞精），同時協助受災小農申請救助金。我們共享風險、守護產地！");
-                    } else if (prompt.includes("訂單") || prompt.includes("進度") || prompt.includes("配送")) {
-                        resolve("📦 【訂單與配送查詢說明】\n\n阿通伯報你知！只要登入我們的「會員中心」，點擊「訂單追蹤」，就能即時查看這期主題箱的打包與冷鏈出貨狀態。\n\n我們所有的生鮮箱都配備了【IoT 溫溼度即時監控】，你可以直接在網頁上看見配送車內的即時溫度，保證送到你家門口時，彩虹玉米和牧草蛋都是最新鮮、最冰涼的狀態啦！如有緊急物流問題，也可以隨時撥打小農契作專線：(037) 752-110。");
-                    } else if (prompt.includes("訂閱") || prompt.includes("方案") || prompt.includes("暫停") || prompt.includes("取消")) {
-                        resolve("📅 【訂閱方案彈性管理】\n\n我們的「一期一會主題箱」非常彈性！你只要進入「訂閱管理中心」：\n\n1. 隨時可以【修改配送地址】或【更換收件人】（例如中秋節這期直接寄給長輩送禮）。\n2. 若出國或短期不在家，可一鍵點擊【暫停配送】，當月就不會扣款，下個月再自動恢復。\n3. 無任何綁約綁死，隨時可自主【取消訂閱】，零摩擦阻力！我們對自己的農產品質非常有信心，不怕你比較！");
-                } else if (prompt.includes("聯絡") || prompt.includes("契作") || prompt.includes("合作") || prompt.includes("電話") || prompt.includes("聯絡方式")) {
-                        resolve("📞 【通霄小農聯絡與契作合作資訊】\n\n阿通伯熱情歡迎各界合作！不論你是想加入契作的小農，還是想集體團購的企業夥伴：\n\n• 契作辦公室：苗栗縣通霄鎮南和里121縣道小農電商合作社\n• 聯絡專線：(037) 752-110 (週一至週五 09:00 - 17:00)\n• 合作信箱：coop@tongxiao.farm\n• 在地合作窗口：\n  - 標裕牧場 (放走雞、滴雞精): 魏大哥\n  - 3J果園 (老欉文旦、柑橘): 三胞胎兄弟\n  - 五北里玉米班 (彩虹玉米): 溫阿伯\n\n加入我們，一起用 D2C 商業模式翻轉傳統老農村，讓通霄好物走向全台灣！");
-                } else if (prompt.includes("券") || prompt.includes("折價") || prompt.includes("折扣") || prompt.includes("TONGXIAO50")) {
-                        resolve("🎫 【50元分享優惠券折抵說明】\n\n恭喜你拿到我們的【TONGXIAO50】優惠代碼！\n\n使用方式非常簡單：\n裝你完成首期訂閱後，將專案分享至 FB 或 LINE，系統就會自動將該優惠券【綁定至您的扣款帳戶】。在下一個月的定期定額扣款中，系統會直接自動扣減 50 元喔！不需手動輸入，省時又方便！感謝你成為我們的「通霄品牌推廣大使」！");
-                    } else {
-                        resolve("👨‍🌾 呵呵！通霄在地的故事可多著呢。從魏趨順大哥的吃素土雞與滴雞精、溫阿伯的彩虹玉米、3J果園三胞胎兄弟的老欉文旦，到我們 D2C 商城的自動扣款保障機制，有什麼想了解的隨時告訴阿通伯！");
-                    }
-                }, 1000);
-            });
-        }
-
-        // 🚀 Premium Quick Service Navigation Handler
-        function quickNavigate(targetId) {
-            if (targetId === 'stories') {
-                const element = document.getElementById('stories');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-            } else if (targetId === 'traceability') {
-                const element = document.getElementById('traceability');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-            } else if (targetId === 'subscription') {
-                const element = document.getElementById('subscription');
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    goToStep(1); // 確保是方案選擇頁
-                }
-            } else if (targetId === 'omomap') {
-                const element = document.getElementById('omomap');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-            } else if (targetId === 'member') {
-                const element = document.getElementById('chatbot');
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    // 自動替會員在 AI 聊天室提問配送進度
-                    quickAsk('我要如何查詢我的訂閱方案與配送進度？');
-                }
-            } else if (targetId === 'cart') {
-                const element = document.getElementById('subscription');
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    goToStep(2); // 直接導向結帳與優惠碼扣抵頁！
-                }
-            }
-        }
-
         // OMO Interactive Map Spots Switcher (UPDATED with dynamic Map Redirects)
         function selectOmoSpot(spotKey, btnElement) {
             const buttons = document.querySelectorAll('#omomap button');
@@ -1759,9 +1691,178 @@
             }
         }
 
+        // 🚀 Premium Quick Service Navigation Handler (Updated to support Member Portal)
+        function quickNavigate(targetId) {
+            if (targetId === 'stories') {
+                const element = document.getElementById('stories');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'traceability') {
+                const element = document.getElementById('traceability');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'subscription') {
+                const element = document.getElementById('subscription');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    goToStep(1); // 確保是方案選擇頁
+                }
+            } else if (targetId === 'omomap') {
+                const element = document.getElementById('omomap');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'member') {
+                openMemberModal(); // 開啟新增的會員中心登入專區
+            } else if (targetId === 'cart') {
+                const element = document.getElementById('subscription');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    goToStep(2); // 直接導向結帳與優惠碼扣抵頁！
+                }
+            }
+        }
+
         function removeChatLoading(id) {
             const element = document.getElementById(id);
             if (element) element.remove();
+        }
+
+        // 👤 會員中心浮動視窗開啟/關閉與互動邏輯
+        function openMemberModal() {
+            const modal = document.getElementById('memberModal');
+            const modalContent = document.getElementById('memberModalContent');
+            
+            modal.classList.remove('pointer-events-none');
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('translate-y-4');
+            modalContent.classList.add('translate-y-0');
+
+            if (!memberIsLoggedIn) {
+                generateCaptchaCode();
+            }
+        }
+
+        function closeMemberModal() {
+            const modal = document.getElementById('memberModal');
+            const modalContent = document.getElementById('memberModalContent');
+            
+            modal.classList.add('pointer-events-none');
+            modal.classList.remove('opacity-100');
+            modalContent.classList.remove('translate-y-0');
+            modalContent.classList.add('translate-y-4');
+        }
+
+        // HTML5 Canvas 圖形驗證碼生成引擎
+        function generateCaptchaCode() {
+            const canvas = document.getElementById('captchaCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // 清空畫布
+            ctx.clearRect(0, 0, width, height);
+
+            // 背景雜色渲染
+            ctx.fillStyle = '#f5f4f0';
+            ctx.fillRect(0, 0, width, height);
+
+            // 隨機生成 4 個英數字元（排除 1, 0, I, O 等易混淆字元）
+            const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+            generatedCaptcha = '';
+            for (let i = 0; i < 4; i++) {
+                generatedCaptcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            // 繪製背景干擾噪點
+            for (let i = 0; i < 50; i++) {
+                ctx.fillStyle = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.15)`;
+                ctx.beginPath();
+                ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // 繪製背景干擾線
+            for (let i = 0; i < 4; i++) {
+                ctx.strokeStyle = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.3)`;
+                ctx.lineWidth = Math.random() * 2 + 1;
+                ctx.beginPath();
+                ctx.moveTo(Math.random() * width, Math.random() * height);
+                ctx.lineTo(Math.random() * width, Math.random() * height);
+                ctx.stroke();
+            }
+
+            // 逐字繪製扭曲旋轉字元
+            ctx.textBaseline = 'middle';
+            for (let i = 0; i < generatedCaptcha.length; i++) {
+                const char = generatedCaptcha[i];
+                ctx.font = `bold ${Math.floor(Math.random() * 8) + 24}px "Noto Sans TC", sans-serif`;
+                ctx.fillStyle = `rgb(${Math.floor(Math.random() * 100)}, ${Math.floor(Math.random() * 120 + 20)}, ${Math.floor(Math.random() * 100)})`; // 偏向深綠色系
+
+                const x = 15 + i * 28 + Math.random() * 5;
+                const y = height / 2 + Math.random() * 6 - 3;
+                const angle = (Math.random() * 30 - 15) * Math.PI / 180; // 旋轉度數
+
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.fillText(char, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        // 會員安全登入提交驗證
+        function submitMemberLogin() {
+            const accInput = document.getElementById('memberAccount').value.trim();
+            const passInput = document.getElementById('memberPassword').value.trim();
+            const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+            const errorMsg = document.getElementById('loginErrorMessage');
+
+            if (!accInput) {
+                errorMsg.innerText = '⚠️ 請輸入會員帳號！';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            if (!passInput) {
+                errorMsg.innerText = '⚠️ 請輸入密碼！';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            if (captchaInput !== generatedCaptcha) {
+                errorMsg.innerText = '❌ 驗證碼錯誤，請點擊重新生成！';
+                errorMsg.classList.remove('hidden');
+                generateCaptchaCode();
+                document.getElementById('captchaInput').value = '';
+                return;
+            }
+
+            // 模擬安全驗證處理
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="animate-spin"><i data-lucide="loader-2" class="w-5 h-5"></i></i> 正在透過數位信任網關安全驗證...`;
+            lucide.createIcons();
+
+            setTimeout(() => {
+                // 登入成功轉場至 Dashboard
+                memberIsLoggedIn = true;
+                errorMsg.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `登入會員中心 <i data-lucide="log-in" class="w-5 h-5"></i>`;
+                lucide.createIcons();
+
+                // 套用資訊
+                document.getElementById('dashMemberName').innerText = accInput.includes('@') ? accInput.split('@')[0] : '白沙屯信眾';
+                document.getElementById('memberLoginView').classList.add('hidden');
+                document.getElementById('memberDashboardView').classList.remove('hidden');
+            }, 1200);
+        }
+
+        // 安全登出處理
+        function submitMemberLogout() {
+            memberIsLoggedIn = false;
+            document.getElementById('memberDashboardView').classList.add('hidden');
+            document.getElementById('memberLoginView').classList.remove('hidden');
+            document.getElementById('memberAccount').value = '';
+            document.getElementById('memberPassword').value = '';
+            document.getElementById('captchaInput').value = '';
+            generateCaptchaCode();
         }
     </script>
 </body>
