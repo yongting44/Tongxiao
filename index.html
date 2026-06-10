@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雲端上的通霄 - D2C 與 OMO 地方創生電子商務藍圖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .serif-title {
+            font-family: 'Playfair Display', 'Noto Sans TC', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 360px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .tab-active {
+            background-color: #059669;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+        .story-tab-active {
+            border-color: #059669;
+            background-color: #ecfdf5;
+            color: #047857;
+        }
+
+        /* --- 自訂雙層流體漂移動畫 --- */
+        @keyframes float-slow-1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(50px, -70px) scale(1.15); }
+            66% { transform: translate(-30px, 40px) scale(0.9); }
+        }
+        @keyframes float-slow-2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1.05); }
+            50% { transform: translate(-60px, 60px) scale(0.95); }
+        }
+        .animate-float-1 {
+            animation: float-slow-1 28s infinite ease-in-out;
+        }
+        .animate-float-2 {
+            animation: float-slow-2 32s infinite ease-in-out;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        stone: {
+                            50: '#fcfcfb',
+                            100: '#f5f4f0',
+                            200: '#e7e5de',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        emerald: {
+                            50: '#f0fdf4',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        amber: {
+                            50: '#fffbeb',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-100 text-stone-800 antialiased selection:bg-emerald-200 selection:text-emerald-900 relative">
+
+    <!-- Chosen Palette: Warm Stone Neutrals with Emerald Green (Growth/Agriculture) and Amber (Warmth/Corn/Blessing) accents. -->
+    <!-- Application Structure Plan: The SPA is organized into seven interconnected, interactive sections designed for maximum readability and engagement:
+         1. Hero Portal: High-impact landing introducing the concept with premium moving ambient wind graphics.
+         2. Demographic Dashboard: Presenting the core crisis/insight with dynamic charts.
+         3. D2C vs. Platforms: Interactive comparison and dynamic timeline slider.
+         4. Artisan Heritage Hall (#stories): A deeply engaging narrative panel detailing the authentic stories of producers like Wei Qu-shun of Biao Yu Ranch and the 3J Orchard triplet brothers, now equipped with a powerful Gemini-powered AI Co-branding Marketing copywriter to fuel the community flywheel.
+         5. Crop Digital Twin (Traceability): Interactive switcher showcasing microclimate sensor data and temporal growth tracking.
+         6. "一期一會" Subscription Checkout: 3-step dynamic wizard with Gemini AI recipe generation, newly added dynamic coupon code validator block, and custom social sharing.
+         7. AI Agent Chat Widget: Fully functional mock and true API client supporting standard/custom queries about the regional economy. -->
+    <!-- Visualization & Content Choices: 
+         - Demographic Data -> Goal: Shock/Awareness -> Doughnut Chart (Chart.js) -> Dynamic Hover tooltips.
+         - Subscription LTV Growth -> Goal: Prove Model Sustainability -> Interactive Line Chart (Chart.js) showing cumulative values.
+         - Artisan Timeline -> Goal: Build Deep Trust -> Styled vertical HTML/CSS tree with milestone tags.
+         - Moving Background -> Goal: Establish Scenic and Sacred Ambience -> Background System containing:
+           * Canvas 'Breeze Particle Simulator' (#ambientWindBg) representing coastal breeze and maternal blessings.
+           * CSS Keyframe-based drifting blurry organic blobs in the Hero Section.
+         - All charts are perfectly constrained inside responsive divs with strict max-height styling to prevent overflow. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- 🌐 移動式背景圖案 Canvas 層 (固定於網頁最底層，z-index 設為 0，確保顯色) -->
+    <canvas id="ambientWindBg" class="fixed inset-0 pointer-events-none z-0 w-full h-full"></canvas>
+
+    <!-- 容器層：將所有內容包裹，z-index 設為 10，使其與 Canvas 分層 -->
+    <div class="relative z-10">
+
+        <!-- API Key Context Configuration Modal (Floating Header Option) -->
+        <div id="apiKeyBanner" class="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-xs text-amber-800 font-bold flex flex-wrap justify-center items-center gap-2 relative z-50">
+            <span>✨ 想要體驗真實的 Gemini AI 智慧諮詢與食譜生成嗎？</span>
+            <input type="password" id="globalApiKey" placeholder="在此貼上您的 Gemini API Key" class="bg-white border border-amber-300 rounded px-2 py-0.5 text-xs text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-500 w-48">
+            <span class="text-[10px] text-amber-600 font-normal">（選填，若無則啟用智能模擬回覆）</span>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav class="sticky top-0 w-full z-40 glass-panel shadow-sm transition-all duration-300" id="navbar">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-20">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-emerald-600/20">霄</div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-wider text-stone-900 leading-none">雲端上的通霄</h1>
+                            <p class="text-[10px] text-emerald-600 font-black tracking-widest uppercase mt-1">D2C Heritage System</p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-6">
+                        <a href="#demographics" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">人口危機</a>
+                        <a href="#strategy" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">D2C戰略</a>
+                        <a href="#stories" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">職人故事</a>
+                        <a href="#traceability" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">作物溯源</a>
+                        <a href="#subscription" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">主題箱訂閱</a>
+                        <a href="#omomap" class="text-stone-600 hover:text-emerald-600 font-bold text-sm transition-colors">OMO地圖</a>
+                        <a href="#chatbot" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all flex items-center gap-1">
+                            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i> 阿通伯 AI
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Header Hero Section (With Drifting Fluid Blobs Background) -->
+        <header class="relative pt-24 pb-12 overflow-hidden flex flex-col items-center justify-center min-h-[75vh] text-center px-4">
+            <!-- 漂移動態流體色塊 -->
+            <div class="absolute inset-0 bg-gradient-to-b from-emerald-50/40 via-stone-50/20 to-stone-100 -z-10"></div>
+            <div class="absolute w-[30rem] h-[30rem] bg-emerald-100/50 rounded-full blur-3xl opacity-40 top-10 left-10 -z-10 animate-float-1"></div>
+            <div class="absolute w-[35rem] h-[35rem] bg-amber-50/60 rounded-full blur-3xl opacity-50 bottom-10 right-10 -z-10 animate-float-2"></div>
+            
+            <span class="px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black tracking-widest uppercase mb-6 shadow-sm border border-emerald-200">
+                D2C × OMO 地方創生電子商務行銷藍圖
+            </span>
+            <h1 class="serif-title text-5xl md:text-8xl font-black text-stone-900 tracking-tight mb-6 leading-tight">
+                帶著媽祖的祝福，<br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500">把通霄好物帶回家</span>
+            </h1>
+            <p class="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed mb-10 font-medium">
+                通霄的人（產地故事）、地（百萬進香人潮）、物（認證農產）在此完美交織。<br/>
+                我們建立的不只是一套購物車，而是翻轉高齡化農業鎮宿命的數位信任生態系。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#subscription" class="w-full sm:w-auto px-8 py-4 bg-stone-900 text-white rounded-full font-black text-base hover:bg-emerald-600 transition-all shadow-lg hover:shadow-emerald-200 hover:-translate-y-0.5">
+                    訂閱一期一會主題箱
+                </a>
+                <a href="#stories" class="w-full sm:w-auto px-8 py-4 bg-white text-stone-800 rounded-full font-bold text-base hover:bg-stone-50 transition-all border border-stone-200">
+                    閱讀產地職人故事
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 space-y-36">
+
+            <!-- 🚀 快速服務通道 (Quick Services Navigation Bar) -->
+            <section class="scroll-mt-28 -mt-16">
+                <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl border border-stone-200/60 max-w-4xl mx-auto">
+                    <p class="text-center text-xs font-black text-emerald-700 tracking-widest uppercase mb-4">
+                        ⚡ 雲端通霄 ‧ 快速服務通道
+                    </p>
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                        <!-- 1. Farmers Story -->
+                        <button onclick="quickNavigate('stories')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="user-check" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">小農介紹</span>
+                        </button>
+                        <!-- 2. Marketplace -->
+                        <button onclick="quickNavigate('traceability')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="sprout" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">優質賣場</span>
+                        </button>
+                        <!-- 3. Subscription -->
+                        <button onclick="quickNavigate('subscription')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="package-open" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">主題訂閱</span>
+                        </button>
+                        <!-- 4. OMO Maps -->
+                        <button onclick="quickNavigate('omomap')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">體驗地圖</span>
+                        </button>
+                        <!-- 5. Member Info -->
+                        <button onclick="quickNavigate('member')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group">
+                            <div class="w-12 h-12 rounded-full bg-emerald-100/80 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="user" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">會員中心</span>
+                        </button>
+                        <!-- 6. Cart -->
+                        <button onclick="quickNavigate('cart')" class="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-emerald-50 hover:text-emerald-700 transition-all group relative">
+                            <div class="w-12 h-12 rounded-full bg-amber-100/80 text-amber-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                            </div>
+                            <span class="text-xs font-black text-stone-700 group-hover:text-emerald-800">購物車</span>
+                            <span class="absolute top-2 right-4 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1: Demographics Context Dashboard -->
+            <section id="demographics" class="scroll-mt-28">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Core Insight</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">轉折點：人口結構危機與產業數位化</h2>
+                    <p class="text-stone-500 leading-relaxed">
+                        本區呈現通霄鎮面臨的嚴峻高齡化威脅。數據指出，傳統一級產業若無法轉型，將難以在傳統通路生存。然而，百萬級線下觀光客源（如白沙屯進香）正能成為線上 D2C 品牌最優質的「流量引擎」。
+                    </p>
+                </div>
+                
+                <div class="bg-white/90 backdrop-blur rounded-[40px] p-8 md:p-12 shadow-sm border border-stone-200/60 flex flex-col lg:flex-row items-center gap-12">
+                    <div class="w-full lg:w-1/2 flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+                            <span class="w-2.5 h-6 bg-red-500 rounded"></span> 通霄鎮年齡結構分佈 (2025底)
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="ageDistributionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2 space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-6 bg-stone-50 rounded-2xl border border-stone-200/50">
+                                <span class="text-xs font-bold text-stone-400">總人口數</span>
+                                <p class="text-3xl font-black text-stone-800 mt-1">~31,000 人</p>
+                            </div>
+                            <div class="p-6 bg-red-50 rounded-2xl border border-red-100">
+                                <span class="text-xs font-bold text-red-600">超高齡比例 (65歲以上)</span>
+                                <p class="text-3xl font-black text-red-600 mt-1">24.89%</p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-emerald-50 rounded-3xl border border-emerald-100">
+                            <h4 class="font-bold text-emerald-800 mb-3 flex items-center gap-2 text-lg">
+                                <span>🌱</span> 多元文化與風土交融
+                            </h4>
+                            <p class="text-emerald-700 text-sm leading-relaxed mb-4">
+                                通霄擁有「西閩南、東客家」的豐富文化底蘊。五北里的彩虹玉米（佔全鎮 90% 產量）與坪頂社區轉型成功的「鳳凰產業」（放牧雞、牧草蛋、滴雞精），正急需高品牌溢價來帶動青年返鄉。
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white/80 px-3 py-1 rounded-full text-[10px] text-emerald-800 font-bold">石虎友善農法</span>
+                                <span class="bg-white/80 px-3 py-1 rounded-full text-[10px] text-emerald-800 font-bold">HACCP 雙認證</span>
+                                <span class="bg-white/80 px-3 py-1 rounded-full text-[10px] text-emerald-800 font-bold">MOA 國際有機驗證</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: D2C Strategy & Blueprint -->
+            <section id="strategy" class="scroll-mt-28">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Business Strategy</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">為什麼是 D2C 品牌電商？</h2>
+                    <p class="text-stone-500 leading-relaxed">
+                        本節拆解「通霄模式」的核心商業機制。相比於蝦皮等 C2C 平台無休止的削價競爭，我們自建 D2C (直面消費者) 系統，100% 掌握第一方顧客數據，用「產地故事」與「信任數據」帶動穩定的 LTV 成長。
+                    </p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Platform Comparison Card -->
+                    <div class="bg-white/90 backdrop-blur p-8 rounded-[36px] border border-stone-200/80 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-black mb-6 text-stone-900">平台策略分析</h3>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-stone-50 rounded-2xl border border-stone-200">
+                                    <h4 class="font-bold text-sm text-stone-500 mb-1">一般 B2C/C2C 平台</h4>
+                                    <p class="text-xs text-stone-400">削價競賽、利潤被平台抽成壓縮，消費者難以建立對小農的直接忠誠度。</p>
+                                </div>
+                                <div class="p-4 bg-emerald-50 rounded-2xl border-2 border-emerald-500 shadow-sm">
+                                    <h4 class="font-bold text-sm text-emerald-800 mb-1">通霄 D2C 自建商城</h4>
+                                    <p class="text-xs text-emerald-600">100% 掌握第一方顧客數據、免去平台高昂抽成，利潤直回生產者，並能完整展示 brand 文化與故事。</p>
+                                end</div>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-stone-100 text-xs font-bold text-stone-400">
+                            * 結論：以故事吸引目光，用數據建立信任。
+                        </div>
+                    </div>
+
+                    <!-- LTV Prediction Chart Card -->
+                    <div class="lg:col-span-2 bg-white/90 backdrop-blur p-8 rounded-[36px] border border-stone-200/80 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-xl font-black text-stone-900">預測累積 LTV 價值成長 (12個月)</h3>
+                                <p class="text-xs text-stone-400 mt-1">「一期一會主題箱」訂閱制模擬預測</p>
+                            </div>
+                            <div class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs font-bold">
+                                穩定基本盤 🍳
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="ltvCurveChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Milestone Slider -->
+                <div class="mt-12 bg-white/90 backdrop-blur rounded-[40px] p-8 md:p-12 border border-stone-200/80 shadow-sm">
+                    <h3 class="text-xl font-black text-stone-900 mb-8 flex items-center gap-2">
+                        <i data-lucide="calendar" class="text-emerald-600"></i> 綜合行動藍圖進度探索 (Phase 1 - Phase 3)
+                    </h3>
+                    <div class="mb-6">
+                        <input type="range" id="milestoneSlider" min="1" max="3" value="1" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                        <div class="flex justify-between text-xs font-bold text-stone-400 mt-2 px-1">
+                            <span>Phase 1 (M1-M3)</span>
+                            <span>Phase 2 (M4-M9)</span>
+                            <span>Phase 3 (M10-M12)</span>
+                        </div>
+                    </div>
+                    <div id="milestoneContent" class="bg-stone-50 p-6 rounded-3xl border border-stone-200/60 min-h-[140px] transition-all">
+                        <!-- Dynamic Milestone Content Injection -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Artisan Heritage Hall (職人故事館) -->
+            <section id="stories" class="scroll-mt-28">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Heritage & Passion</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">通霄職人故事館</h2>
+                    <p class="text-stone-500 leading-relaxed">
+                        本區收錄通霄在地生產者的生命故事。這裡沒有冰冷的工廠流水線，只有職人們在遭遇財務危機與心灰意冷時，因對土地與家人的愛而堅持下來的溫暖靈魂。
+                    </p>
+                </div>
+
+                <!-- Story Navigation Tabs -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="storyTabs">
+                    <button onclick="selectStory('biaoyu', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm story-tab-active border-2">
+                        <span class="text-3xl">🐔</span>
+                        <div>
+                            <h4 class="font-black text-xs text-stone-800">標裕牧場 魏趨順</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">吃「素」的健康放走雞</span>
+                        </div>
+                    </button>
+                    <button onclick="selectStory('threej', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">🍐</span>
+                        <div>
+                            <h4 class="font-black text-xs text-stone-800">3J果園 三胞胎兄弟</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">老欉文旦的傳承故事</span>
+                        </div>
+                    </button>
+                    <button onclick="selectStory('wenabo', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">👨‍🌾</span>
+                        <div>
+                            <h4 class="font-black text-xs text-stone-800">五北社區 溫阿伯</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">四十年的彩虹守護者</span>
+                        </div>
+                    </button>
+                    <button onclick="selectStory('pingding', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">🥚</span>
+                        <div>
+                            <h4 class="font-black text-xs text-stone-800">坪頂社區 鳳凰小農</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">陡峭山坡的放牧生態蛋</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Interactive Story Detail Panel -->
+                <div class="bg-white/95 backdrop-blur rounded-[40px] p-8 md:p-12 border border-stone-200/80 shadow-sm overflow-hidden">
+                    <div class="grid lg:grid-cols-12 gap-12 items-center">
+                        <!-- Left column: Big Emoji/Icon & Profile Summary -->
+                        <div class="lg:col-span-4 text-center space-y-6">
+                            <div id="storyBigEmoji" class="w-40 h-40 bg-emerald-50 rounded-[40px] mx-auto flex items-center justify-center text-7xl shadow-inner border border-emerald-100">
+                                🐔
+                            </div>
+                            <div>
+                                <h3 id="storyAuthor" class="text-2xl font-black text-stone-900">魏趨順</h3>
+                                <p id="storyRole" class="text-xs text-stone-400 font-bold mt-1 tracking-wider uppercase">標裕牧場創辦人</p>
+                            </div>
+                            <div class="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-2xl text-xs font-black text-emerald-700">
+                                <i data-lucide="award" class="w-4 h-4"></i>
+                                <span id="storyTag">全國首家認證土雞場</span>
+                            </div>
+                        </div>
+
+                        <!-- Right column: The deep emotional journey -->
+                        <div class="lg:col-span-8 space-y-6">
+                            <div class="relative">
+                                <span class="text-5xl font-serif text-emerald-200 absolute -top-4 -left-2 -z-0">“</span>
+                                <blockquote id="storyQuote" class="serif-title text-xl md:text-2xl font-black text-stone-800 italic leading-relaxed relative z-10 pl-6">
+                                    「想起因癌症病過世的家父，心中便有一股使命感，驅使我堅持下去飼養【健康、安全、美味】的土雞。」
+                                </blockquote>
+                            </div>
+                            <p id="storyText" class="text-stone-600 text-sm leading-relaxed font-medium">
+                                民國八十四年間回到苗栗鄉下，接下父親養殖雞隻副業並積極參加各種農業培訓及安全農業講習。期間家父罹癌過世並經數年研究飼養，於民國九十年取得全國第一家經政府認證的土雞養殖牧場，進而推出「健康放走雞」系列雞肉產品。隔年，為使產品更健康，推出全國第一家１００％全程使用天然植物性飼糧的「吃『素』土雞」，並把阿嬤養雞的味道找回來。民國九十六年亦取得產銷履歷認證。這些年間，由不懂到獲得消費大眾信任期間，嚐盡不少苦頭及財務問題，一度心灰意冷，萌生退意。但想起因病過世的家父，心中便有一股使命感，趨使我堅持下去飼養【健康、安全、美味】的土雞，讓更多消費大眾能吃得更健康、安心。
+                            </p>
+
+                            <!-- Timeline milestones -->
+                            <div class="pt-6 border-t border-stone-100 space-y-4">
+                                <h4 class="text-xs font-black text-stone-400 uppercase tracking-widest">奮鬥里程碑</h4>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="storyMilestones">
+                                    <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                                        <span class="text-xs font-bold text-stone-400 font-mono">民國 84 年</span>
+                                        <p class="text-xs font-bold text-stone-800 mt-1">返鄉承接父業</p>
+                                    </div>
+                                    <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                                        <span class="text-xs font-bold text-stone-400 font-mono">民國 90 年</span>
+                                        <p class="text-xs font-bold text-stone-800 mt-1">首家政府認證</p>
+                                    </div>
+                                    <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
+                                        <span class="text-xs font-bold text-stone-400 font-mono">民國 91 年</span>
+                                        <p class="text-xs font-bold text-stone-800 mt-1">全程植物性飼料</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ✨ AI 小農聯名故事文案產生器 (New Gemini Feature) -->
+                <div class="mt-12 bg-emerald-50/80 backdrop-blur rounded-[32px] p-6 md:p-8 border border-emerald-100 shadow-sm space-y-6 relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/20 rounded-full blur-2xl"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">✨</span>
+                        <h3 class="text-lg font-black text-emerald-950">AI 小農聯名行銷文案產生器 (社群導流飛輪)</h3>
+                    </div>
+                    <p class="text-xs text-emerald-800 leading-relaxed font-medium">
+                        我們自建的 D2C 品牌商城需要源源不絕的社群聲量。本工具利用 Gemini AI 實時編織職人的心血故事，一鍵將「產地價值與傳承精神」轉化為社群（FB / IG）爆款導流貼文，點燃社群裂變飛輪！
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-emerald-800 mb-2">主打聯名物產組合</label>
+                            <select id="aiStoryProduct" class="w-full bg-white border border-emerald-200 rounded-xl px-3 py-2 text-xs text-stone-700 outline-none focus:ring-1 focus:ring-emerald-500">
+                                <option value="標裕吃素放走雞 × 3J果園老欉文旦">標裕吃素放走雞 × 3J老欉文旦 (中秋補給)</option>
+                                <option value="五北里彩虹玉米 × 坪頂社區放牧蛋">五北彩虹玉米 × 坪頂放牧蛋 (日常旬味)</option>
+                                <option value="標裕滴雞精 × 白沙屯媽祖過爐平安禮">標裕滴雞精 × 媽祖平安禮 (養生祈福)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-emerald-800 mb-2">設定文案風格語調</label>
+                            <select id="aiStoryTone" class="w-full bg-white border border-emerald-200 rounded-xl px-3 py-2 text-xs text-stone-700 outline-none focus:ring-1 focus:ring-emerald-500">
+                                <option value="溫暖感性、強調父子與三胞胎手足傳承，守護安心健康的初衷">👨‍👩‍👧 溫馨家族傳承風格</option>
+                                <option value="熱血奮鬥、強調青年不畏困境返鄉，以科技與友善農法翻轉老農村">🔥 青年返鄉奮鬥精神</option>
+                                <option value="民俗祈福、融入白沙屯天上聖母過爐的溫暖慈悲與心靈保庇保佑">⛩️ 白沙屯信仰守護感</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="generateArtisanAdCopy()" id="artisanAdBtn" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-200">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i> ✨ 一鍵生成黃金行銷文案
+                            </button>
+                        </div>
+                    </div>
+                    <div id="aiArtisanAdResult" class="hidden text-xs text-stone-700 bg-white p-5 rounded-2xl border border-emerald-100 leading-relaxed whitespace-pre-wrap shadow-inner animate-in fade-in duration-300">
+                        <!-- Output copy from Gemini -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Crop Digital Twin & Traceability -->
+            <section id="traceability" class="scroll-mt-28">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Digital Twin</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">作物生長時光機：數位化追溯系統</h2>
+                    <p class="text-stone-500 leading-relaxed">
+                        本節展示農作物的即時生長軌跡與物聯網 (IoT) 數據。透過前端數位監控，消費者能親眼見證契作農產從播種到包裝的過程，透明化的認證（HACCP、MOA）將直接呈現在畫面上。
+                    </p>
+                </div>
+
+                <!-- Crop Switcher Cards -->
+                <div class="grid lg:grid-cols-4 gap-4 mb-8" id="cropButtons">
+                    <button onclick="selectCrop('corn', this)" class="crop-btn p-5 bg-white border border-emerald-500 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all border-2 text-left w-full shadow-sm">
+                        <span class="text-3xl">🌽</span>
+                        <div>
+                            <h4 class="font-black text-sm text-stone-800">五北里彩虹玉米</h4>
+                            <span class="text-[10px] text-emerald-600 font-bold">黑糯極致口感</span>
+                        </div>
+                    </button>
+                    <button onclick="selectCrop('egg', this)" class="crop-btn p-5 bg-white border border-stone-200 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">🍳</span>
+                        <div>
+                            <h4 class="font-black text-sm text-stone-800">坪頂牧草蛋</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">天然放牧高規格</span>
+                        </div>
+                    </button>
+                    <button onclick="selectCrop('orange', this)" class="crop-btn p-5 bg-white border border-stone-200 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">🍊</span>
+                        <div>
+                            <h4 class="font-black text-sm text-stone-800">福興茂谷柑</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">皮薄多汁爆甜</span>
+                        </div>
+                    </button>
+                    <button onclick="selectCrop('pomelo', this)" class="crop-btn p-5 bg-white border border-stone-200 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
+                        <span class="text-3xl">🍐</span>
+                        <div>
+                            <h4 class="font-black text-sm text-stone-800">3J果園 老欉文旦</h4>
+                            <span class="text-[10px] text-stone-400 font-bold">中秋白露限定</span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Crop Data Container -->
+                <div class="bg-white/95 backdrop-blur rounded-[40px] p-8 md:p-12 border border-stone-200/80 shadow-sm">
+                    <div class="grid lg:grid-cols-12 gap-12">
+                        <!-- Left: Crop Status & Live Sensors -->
+                        <div class="lg:col-span-5 space-y-8">
+                            <div>
+                                <span id="cropBatch" class="text-xs font-mono font-bold text-stone-400 tracking-wider">BATCH: TX-2026-CR01</span>
+                                <h3 id="cropName" class="text-3xl font-black text-stone-900 mt-1 mb-3">五北里彩虹玉米</h3>
+                                <p id="cropDesc" class="text-sm text-stone-500 leading-relaxed font-medium">通霄特有的沙質土壤配合海風鹽分，孕育出富含花青素且極具韌性的黑糯口感。</p>
+                            </div>
+
+                            <!-- Simulated IoT Live Panel -->
+                            <div class="bg-stone-50 p-6 rounded-3xl border border-stone-200/50">
+                                <h4 class="text-xs font-black text-emerald-700 tracking-wider uppercase mb-4 flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> 產地 IoT 感測即時數據
+                                </h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <span class="text-[10px] text-stone-400 font-bold">空氣溫度</span>
+                                        <p id="iotTemp" class="text-xl font-black text-stone-800 mt-1">24.5 °C</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-stone-400 font-bold">土壤濕度</span>
+                                        <p id="iotHumid" class="text-xl font-black text-stone-800 mt-1">62.8 %</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Certification Badges -->
+                            <div class="space-y-3">
+                                <h4 class="text-xs font-black text-stone-400 uppercase tracking-wider">數位安全認證</h4>
+                                <div class="grid grid-cols-2 gap-3" id="cropCertifications">
+                                    <!-- Certifications injected dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Growth Timeline Machine -->
+                        <div class="lg:col-span-7">
+                            <h4 class="font-black text-lg text-stone-800 mb-6 flex items-center gap-2">
+                                <i data-lucide="camera" class="text-emerald-600"></i> 作物生長歷程紀錄
+                            </h4>
+                            <div class="relative pl-6 border-l-2 border-stone-100 space-y-8" id="cropTimeline">
+                                <!-- Timeline injected dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: "一期一會" Subscription Wizard -->
+            <section id="subscription" class="scroll-mt-28">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Subscription Experience</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">「一期一會」農產主題箱訂閱</h2>
+                    <p class="text-stone-500 leading-relaxed">
+                        本區為消費者提供零阻力的定期定額自動扣款訂閱服務。消費者可獲得 AI 自動搭配的旬味食譜，並在成功後分享獲得 50 NTD 續訂折扣。此系統是極大化小農 LTV 與保障生產穩定性的核心引擎。
+                    </p>
+                </div>
+
+                <div class="bg-white/95 backdrop-blur rounded-[40px] border border-stone-200/80 shadow-md overflow-hidden max-w-4xl mx-auto">
+                    <!-- Wizard Head -->
+                    <div class="bg-stone-50 px-8 py-5 border-b border-stone-200 flex justify-between items-center">
+                        <span class="font-black text-stone-900 flex items-center gap-2">
+                            <i data-lucide="package" class="text-emerald-600"></i> 訂閱精靈
+                        </span>
+                        <div class="flex items-center gap-4 text-xs font-bold text-stone-400" id="wizardSteps">
+                            <span class="text-emerald-600" id="stepIndicator1">1. 選擇方案</span>
+                            <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                            <span id="stepIndicator2">2. 安全扣款</span>
+                            <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                            <span id="stepIndicator3">3. 社群獎勵</span>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Body -->
+                    <div class="p-8 md:p-12">
+                        
+                        <!-- STEP 1: Select Plan & AI Recipe -->
+                        <div id="subStep1" class="space-y-8">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <!-- Monthly Box Option -->
+                                <div id="planMonthly" onclick="choosePlan('monthly')" class="p-6 rounded-3xl border-4 border-emerald-600 bg-white cursor-pointer relative transition-all">
+                                    <span class="absolute top-4 right-4 text-emerald-600" id="checkIconMonthly"><i data-lucide="check-circle" class="w-6 h-6"></i></span>
+                                    <h4 class="font-black text-lg mb-1">月月保平安 (月配方案)</h4>
+                                    <p class="text-xs text-stone-400 mb-4">適合一般小家庭</p>
+                                    <div class="flex items-baseline gap-1 mb-4">
+                                        <span class="text-3xl font-black text-emerald-700">$1,280</span>
+                                        <span class="text-xs text-stone-400">/ 每次配送</span>
+                                        <span class="text-xs text-red-500 line-through font-bold ml-2">原價 $1,550</span>
+                                    </div>
+                                    <ul class="text-xs text-stone-500 space-y-2">
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 每月一次低溫配送</li>
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 含牧草蛋4盒 + 滴雞精2盒</li>
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 隨機搭配 2 種當期旬物鮮果</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Quarterly Box Option -->
+                                <div id="planQuarterly" onclick="choosePlan('quarterly')" class="p-6 rounded-3xl border-4 border-transparent bg-stone-50 cursor-pointer relative transition-all">
+                                    <span class="absolute top-4 right-4 text-stone-300" id="checkIconQuarterly"><i data-lucide="circle" class="w-6 h-6"></i></span>
+                                    <h4 class="font-black text-lg mb-1">四季如意 (季配方案)</h4>
+                                    <p class="text-xs text-stone-400 mb-4">一次綁定一季，享最高折扣</p>
+                                    <div class="flex items-baseline gap-1 mb-4">
+                                        <span class="text-3xl font-black text-emerald-700">$3,500</span>
+                                        <span class="text-xs text-stone-400">/ 每次配送</span>
+                                        <span class="text-xs text-red-500 line-through font-bold ml-2">現省 $340</span>
+                                    </div>
+                                    <ul class="text-xs text-stone-500 space-y-2">
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 每季 3 次配送（每月一箱）</li>
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 包含月配方案所有生鮮精華</li>
+                                        <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-500"></i> 額外贈送白沙屯進香限量小物</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Box Ingredients Preview and AI Recipe Builder -->
+                            <div class="p-6 bg-emerald-900 text-white rounded-3xl relative overflow-hidden">
+                                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                                    <div>
+                                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-300">本月旬味內容</span>
+                                        <h4 class="text-xl font-black mt-1 mb-2">5月份 初夏限定主題箱</h4>
+                                        <p class="text-xs text-emerald-200 leading-relaxed max-w-lg">五北里彩虹玉米 x 4 根、坪頂牧草蛋 (10入) x 4 盒、標裕滴雞精 x 2 包、福興茂谷柑 x 1 包。</p>
+                                        <div class="mt-4 flex items-center gap-1 text-[10px] text-amber-300 font-bold">
+                                            <i data-lucide="info" class="w-3 h-3"></i> 本月內含氣候補償條約：若玉米產量受損，將自動等值更換為滴雞精
+                                        </div>
+                                    </div>
+                                    <button onclick="triggerAiRecipe()" id="recipeBtn" class="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-3 rounded-2xl text-xs font-black tracking-wider transition-all">
+                                        <i data-lucide="sparkles" class="w-4 h-4"></i> ✨ 獲取 AI 旬味食譜推薦
+                                    </button>
+                                </div>
+                                <!-- AI Recipe Result Panel -->
+                                <div id="aiRecipeResult" class="hidden mt-6 pt-6 border-t border-white/10 text-xs text-emerald-50 bg-white/5 p-4 rounded-xl leading-relaxed whitespace-pre-wrap">
+                                    <!-- Content dynamically populated -->
+                                </div>
+                            </div>
+
+                            <button onclick="goToStep(2)" class="w-full py-5 bg-stone-900 text-white rounded-2xl font-black text-base flex justify-center items-center gap-2 hover:bg-emerald-600 hover:scale-[1.01] transition-all">
+                                下一步：設定自動扣款與授權 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- STEP 2: Checkout & Credit Card (Updated with Promo Code Input) -->
+                        <div id="subStep2" class="hidden space-y-8 animate-in fade-in duration-300 max-w-md mx-auto">
+                            <div class="text-center">
+                                <h4 class="font-black text-xl mb-1">設定定期定額安全扣款</h4>
+                                <p class="text-xs text-stone-400">金流引擎透過 3D 安全認證加密保護</p>
+                            </div>
+
+                            <div class="p-6 bg-stone-50 rounded-3xl border border-stone-200/80 space-y-4">
+                                <div class="flex justify-between items-center border-b border-stone-200 pb-3">
+                                    <span class="text-xs font-bold text-stone-500">已選方案</span>
+                                    <span class="font-bold text-sm text-stone-800" id="summaryPlanName">月月保平安 (月配)</span>
+                                </div>
+                                <!-- Dynamic Discount Row (Hidden by default, shown if code valid) -->
+                                <div id="summaryDiscountRow" class="flex justify-between items-center border-b border-stone-200 pb-3 hidden">
+                                    <span class="text-xs font-bold text-red-500">優惠折抵</span>
+                                    <span class="font-bold text-sm text-red-500" id="summaryDiscountAmount">-$0</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-stone-200 pb-3">
+                                    <span class="text-xs font-bold text-stone-500">每次扣款金額</span>
+                                    <span class="font-black text-lg text-emerald-700" id="summaryPrice">$1,280</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-stone-500">首期自動發貨日</span>
+                                    <span class="font-bold text-xs text-stone-800">2026年5月10日</span>
+                                </div>
+
+                                <!-- Promo Code Input Area -->
+                                <div class="space-y-2 mt-4 pt-4 border-t border-stone-200">
+                                    <label class="block text-xs font-bold text-stone-400 uppercase">我有優惠代碼</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="promoInput" placeholder="輸入代碼 (例如: TONGXIAO50)" class="flex-1 bg-white border border-stone-200 rounded-xl px-4 py-2.5 text-xs font-mono focus:ring-2 focus:ring-emerald-500 outline-none uppercase">
+                                        <button onclick="applyPromoCode()" class="px-4 py-2.5 bg-stone-800 hover:bg-stone-900 text-white rounded-xl text-xs font-bold transition-all whitespace-nowrap">套用</button>
+                                    </div>
+                                    <p id="promoMessage" class="text-[10px] hidden font-bold mt-1"></p>
+                                </div>
+                            </div>
+
+                            <!-- Mock Credit Card Input -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-stone-400 mb-2 uppercase">信用卡卡號</label>
+                                    <div class="relative">
+                                        <input type="text" placeholder="XXXX XXXX XXXX XXXX" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                                        <span class="absolute right-4 top-3.5 text-stone-300"><i data-lucide="credit-card" class="w-4 h-4"></i></span>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-stone-400 mb-2 uppercase">到期日</label>
+                                        <input type="text" placeholder="MM / YY" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-stone-400 mb-2 uppercase">安全碼</label>
+                                        <input type="text" placeholder="CVC" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-emerald-500 outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                                <label class="flex gap-2.5 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded accent-emerald-600 mt-0.5" checked>
+                                    <span class="text-[10px] text-amber-900 leading-normal font-bold">
+                                        我已確認並同意氣候補償協議：遇極端天候，平台有權以同等價值之產地加工品（如滴雞精）進行替補發貨，支持地方小農分擔災損。
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button onclick="goToStep(1)" class="w-1/3 py-4 bg-stone-100 hover:bg-stone-200 text-stone-600 font-bold rounded-xl text-sm transition-all">返回</button>
+                                <button onclick="processCheckout()" id="payBtn" class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-sm transition-all shadow-md flex justify-center items-center gap-1">
+                                    確認授權並扣款 <i data-lucide="wallet" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    <!-- STEP 3: Success & Share Flywheel -->
+                    <div id="subStep3" class="hidden space-y-8 animate-in zoom-in-95 duration-500 text-center">
+                        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                            <i data-lucide="check-circle" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-black text-stone-900">恭喜您！訂閱成功</h3>
+                            <p class="text-sm text-stone-500 mt-2">首期「一期一會主題箱」將在 2026年5月10日 準時出貨配送。</p>
+                        </div>
+
+                        <!-- AI Blessing Generator -->
+                        <div class="bg-orange-50 p-6 rounded-3xl border border-orange-100 max-w-xl mx-auto space-y-4">
+                            <h4 class="font-bold text-sm text-orange-900 flex items-center justify-center gap-1.5">
+                                <i data-lucide="sparkles" class="text-orange-500"></i> ✨ AI 媽祖平安守護祝禱詞
+                            </h4>
+                            <p class="text-xs text-orange-800 leading-relaxed font-medium">白沙屯拱天宮的百年祝福已隨您的農產訂單一同啟程。讓 AI 導師為您向媽祖求一段專屬祈願文：</p>
+                            <button onclick="triggerAiBlessing()" id="blessingBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all shadow">
+                                生成個人專屬祝禱文
+                            </button>
+                            <div id="aiBlessingResult" class="hidden text-xs italic text-orange-950 bg-white/80 p-4 rounded-xl text-left border border-orange-200 leading-relaxed whitespace-pre-wrap">
+                                <!-- Dynamic blessing in Chinese Traditional -->
+                            </div>
+                        </div>
+
+                        <!-- Growth Hacking Share Loop -->
+                        <div class="p-8 bg-white rounded-[32px] border-2 border-dashed border-emerald-300 max-w-xl mx-auto relative overflow-hidden">
+                            <h4 class="text-lg font-black text-stone-800 mb-2">傳播這份好運：獲取下次訂閱 50 元折扣！</h4>
+                            <p class="text-xs text-stone-400 leading-relaxed mb-6">點擊下方按鈕，一鍵分享此專案至您的社群圈，即可解鎖下一期主題箱的優惠折抵代碼！</p>
+                            
+                            <div class="bg-stone-50 p-4 rounded-2xl mb-6 text-left border border-stone-100 text-xs italic text-stone-500">
+                                「我剛剛訂閱了 #雲端通霄 的一期一會主題箱！📦 帶著媽祖的祝福，支持在地彩虹玉米與牧草蛋，讓好生活在通霄發生。✨ #D2C #地方創生 #白沙屯媽祖」
+                            </div>
+
+                            <div class="flex flex-wrap justify-center gap-4" id="shareButtonsContainer">
+                                <button onclick="simulateShare('fb')" class="flex items-center gap-2 bg-[#1877F2] text-white px-5 py-3 rounded-xl font-bold text-xs hover:opacity-95 transition-opacity shadow-sm">
+                                    Facebook
+                                </button>
+                                <button onclick="simulateShare('line')" class="flex items-center gap-2 bg-[#06C755] text-white px-5 py-3 rounded-xl font-bold text-xs hover:opacity-95 transition-opacity shadow-sm">
+                                    LINE
+                                </button>
+                            </div>
+
+                            <!-- Secret Promo Code revealed upon sharing -->
+                            <div id="couponResult" class="hidden mt-6 bg-emerald-50 border-2 border-emerald-500 border-dashed p-5 rounded-2xl animate-in zoom-in-95">
+                                <span class="bg-emerald-500 text-white text-[10px] px-2 py-0.5 rounded font-black tracking-widest inline-block mb-2">PROMO CLAIMED</span>
+                                <h5 class="text-xs font-bold text-emerald-800 mb-1">下次扣款自動折抵 $50</h5>
+                                <p class="text-sm font-mono font-black text-emerald-600 tracking-wider">TONGXIAO50</p>
+                                <p class="text-[9px] text-stone-400 mt-2">已成功綁定您的訂閱帳戶，下次金流定期扣款時將自動扣抵！</p>
+                            </div>
+                        </div>
+
+                        <button onclick="resetWizard()" class="text-xs text-stone-400 hover:text-emerald-600 font-bold transition-all">返回方案選擇頁面</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: OMO Interactive Tourist Map & Affiliate Nodes -->
+        <section id="omomap" class="scroll-mt-28">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">OMO Strategy</span>
+                <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">通霄虛實融合 (OMO) 行動節點</h2>
+                <p class="text-stone-500 leading-relaxed">
+                    本區展示「百萬流量引擎」如何與線上商城完美銜接。我們在白沙屯拱天宮周邊、飛牛牧場等經典地標部署「掃碼 OMO 體驗節點」。遊客線下體驗掃碼綁定，線上持續消費回購，收益將自動分潤回饋給在地店鋪，達成三贏。
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-center bg-white/95 backdrop-blur rounded-[40px] p-8 md:p-12 border border-stone-200/80 shadow-sm">
+                <!-- Left: Simulated Interactive Grid Map -->
+                <div class="lg:col-span-7 space-y-6">
+                    <h3 class="text-xl font-black text-stone-900 flex items-center gap-2">
+                        <i data-lucide="map-pin" class="text-emerald-600"></i> 通霄鎮 OMO 熱門體驗節點（點擊地標探索）
+                    </h3>
+                    <div class="relative w-full aspect-[4/3] bg-stone-100 rounded-3xl border border-stone-200 overflow-hidden shadow-inner">
+                        <!-- Spot 1: White Sand Temple -->
+                        <button onclick="selectOmoSpot('temple', this)" class="absolute top-[15%] left-[25%] p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                            ⛩️ 白沙屯拱天宮
+                        </button>
+                        <!-- Spot 2: Flying Cow Ranch -->
+                        <button onclick="selectOmoSpot('ranch', this)" class="absolute top-[60%] left-[60%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                            🐄 飛牛牧場
+                        </button>
+                        <!-- Spot 3: Salt Factory -->
+                        <button onclick="selectOmoSpot('salt', this)" class="absolute top-[35%] left-[45%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                            🧂 臺鹽通霄精鹽廠
+                        </button>
+                        <!-- Spot 4: Historic Trail -->
+                        <button onclick="selectOmoSpot('trail', this)" class="absolute top-[75%] left-[30%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                            🚶 挑鹽古道
+                        </button>
+                        <div class="absolute bottom-4 left-4 bg-white/80 px-3 py-1.5 rounded-xl text-[10px] font-bold text-stone-400">
+                            * 通霄山海線景點 121 / 128 縣道閉環
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Simulated Smartphone OMO scan loop screen -->
+                <div class="lg:col-span-5 bg-stone-50 p-6 md:p-8 rounded-[36px] border border-stone-200/80 shadow-sm space-y-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                            <i data-lucide="smartphone" class="w-4 h-4"></i>
+                        </div>
+                        <h4 class="font-black text-stone-800" id="omoTitle">白沙屯拱天宮 OMO 節點</h4>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-2xl border border-stone-200/50">
+                            <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">現場掃碼內容</span>
+                            <p id="omoScanDesc" class="text-xs text-stone-600 mt-1 leading-relaxed">
+                                遊客在拱天宮周邊商家，掃描「帶著媽祖的祝福」特製 QR Code，除了直接獲得第一手彩虹玉米生長溯源資訊外，還能一鍵綁定此地標店鋪。
+                            </p>
+                        </div>
+
+                        <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-100">
+                            <h5 class="text-xs font-bold text-emerald-800 mb-1 flex items-center gap-1">
+                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> 全通路 (Omnichannel) 分潤機制
+                            </h5>
+                            <p id="omoCommissionDesc" class="text-[10px] text-emerald-700 leading-normal">
+                                當遊客回家後於雲端商城「續訂」常態生鮮（如牧草蛋、龍眼蜂蜜），系統將自動識別綁定關係，每次扣款的 10% 業績將源源不絕分潤回饋給拱天宮的合作夥伴店鋪。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: AI Chatbot "阿通伯" -->
+        <section id="chatbot" class="scroll-mt-28">
+            <div class="max-w-3xl mx-auto text-center mb-16">
+                <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">AI Transformation</span>
+                <h2 class="text-3xl md:text-4xl font-black text-stone-900 mt-2 mb-4">智慧導師：阿通伯 AI 24h 線上諮詢</h2>
+                <p class="text-stone-500 leading-relaxed">
+                    本系統利用大語言模型 (LLM) 與 RAG (檢索增強生成) 機制，提供消費者最即時的產地解說、民俗民俗典故及料理建議。這正是打破線上冰冷購物障礙，重建信仰溫度的秘密武器。
+                </p>
+            </div>
+
+            <div class="bg-white/95 backdrop-blur rounded-[40px] shadow-xl border border-emerald-50 max-w-3xl mx-auto overflow-hidden flex flex-col h-[550px]">
+                <!-- Chat Head -->
+                <div class="bg-emerald-700 p-6 text-white flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">👨‍🌾</div>
+                        <div>
+                          <h4 class="font-black text-lg">阿通伯 AI 助理</h4>
+                          <span class="text-xs text-emerald-200">通霄數位產地導師已就線</span>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1 bg-white/10 rounded-full text-[10px] font-bold">2.5 Flash Preview</span>
+                </div>
+
+                <!-- Chat Messages Screen -->
+                <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
+                    <div class="flex justify-start">
+                        <div class="max-w-[85%] bg-white p-4 rounded-3xl rounded-tl-none text-xs text-stone-700 border border-emerald-100/50 shadow-sm leading-relaxed">
+                            你好！我是通霄地方數位產地導師阿通伯。無論是想了解今年五北里的彩虹玉米、坪頂的放牧蛋、3J果園的三胞胎文旦，還是白沙屯媽祖過爐、氣候補償方案，阿通伯都能幫你解答喔！
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input Tray -->
+                <div class="p-6 bg-white border-t border-stone-100 space-y-4">
+                    <div class="flex gap-2">
+                        <input type="text" id="chatInput" placeholder="在此輸入您的問題... (或點選下方快捷提問)" class="flex-1 bg-stone-50 border border-stone-200 rounded-2xl px-5 py-4 text-xs font-medium focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <button onclick="handleSendMessage()" class="bg-emerald-700 hover:bg-emerald-800 text-white p-4 rounded-2xl shadow transition-all">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <!-- FAQ Quick links -->
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="quickAsk('3J果園文旦甜度如何？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">🍐 3J果園文旦甜度？</button>
+                        <button onclick="quickAsk('如何進行 OMO 分潤？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">⛩️ 怎麼進行 OMO 分潤？</button>
+                        <button onclick="quickAsk('我要如何查詢訂單與配送進度？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">📦 查詢訂單進度？</button>
+                        <button onclick="quickAsk('訂閱方案可以暫停或取消嗎？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">📅 訂閱暫停/取消？</button>
+                        <button onclick="quickAsk('要如何聯絡通霄小農或進行契作？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">📞 聯絡小農與契作？</button>
+                        <button onclick="quickAsk('分享好友獲得的50元折價券如何扣抵？')" class="text-[10px] font-bold text-stone-500 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-700 px-3 py-1.5 rounded-lg transition-colors">🎫 50元折價券扣抵？</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-16 text-center border-t border-stone-800">
+        <div class="max-w-6xl mx-auto px-4 space-y-8">
+            <div class="flex justify-center items-center gap-2">
+                <div class="w-8 h-8 bg-stone-700 rounded-lg flex items-center justify-center text-white font-bold text-xs">霄</div>
+                <span class="font-bold text-white tracking-widest uppercase text-sm">雲端上的通霄 D2C 品牌生態</span>
+            </div>
+            <p class="text-xs max-w-lg mx-auto leading-relaxed text-stone-500">
+                本案例以苗栗通霄地方創生為基礎，將白沙屯信仰、五北里彩虹玉米、坪頂鳳凰產業與南和3J果園進行數位化包裝。我們深信，透過 OMO 與 D2C 策略，能為台灣傳統農漁村找回青年與榮耀。
+            </p>
+            <div class="flex justify-center gap-6 text-xs text-stone-600 font-bold">
+                <a href="#demographics" class="hover:text-white transition-colors">人口分析</a>
+                <a href="#strategy" class="hover:text-white transition-colors">商業模式</a>
+                <a href="#traceability" class="hover:text-white transition-colors">產地溯源</a>
+                <a href="#subscription" class="hover:text-white transition-colors">主題箱訂閱</a>
+            </div>
+            <p class="text-[10px] text-stone-600 uppercase tracking-widest mt-12">
+                © 2026 TONGXIAO TOWN PROJECT. ALL RIGHTS RESERVED.
+            </p>
+        </div>
+    </footer>
+
+    </div> <!-- 🌟 結束內容分層包裹容器 -->
+
+    <!-- JavaScript Business Logic -->
+    <script>
+        // Global variables & database
+        const apiKey = ""; // 執行環境將自動提供 API Key
+        let selectedPlan = 'monthly';
+        let selectedCropId = 'corn';
+        let selectedStoryId = 'biaoyu';
+        
+        // Dynamic promo pricing variables
+        let appliedDiscount = 0;
+        let currentPromoCode = '';
+
+        const cropsDb = {
+            corn: {
+                name: "五北里彩虹玉米",
+                batch: "BATCH: TX-2026-CR01",
+                desc: "通霄特有的沙質土壤配合海風鹽分，孕育出富含花青素且極具韌性的黑糯口感。",
+                temp: "24.5 °C",
+                humid: "62.8 %",
+                certifications: ["日本 MOA 有機驗證", "TAP 產銷履歷"],
+                timeline: [
+                    { stage: "播種期", date: "02-15", desc: "嚴選在地契作非基改玉米種子", img: "🌱" },
+                    { stage: "抽穗期", date: "03-25", desc: "株高達150cm，病蟲害預警監測穩定", img: "🌿" },
+                    { stage: "乳熟期", date: "04-20", desc: "果粒飽滿，花青素累積中", img: "🌽", current: true },
+                    { stage: "預計採收", date: "05-10", desc: "清晨低溫採收配送，保證高甜度不流失", img: "🚚" }
+                ]
+            },
+            egg: {
+                name: "坪頂牧草蛋",
+                batch: "BATCH: TX-2026-EG02",
+                desc: "坪頂社區山坡林地放養，吃新鮮牧草與益生菌長大的快樂母雞，蛋黃濃稠結實無腥味。",
+                temp: "22.1 °C",
+                humid: "58.4 %",
+                certifications: ["HACCP 雙驗證", "無毒牧場標章"],
+                timeline: [
+                    { stage: "自然孵育", date: "持續進行", desc: "母雞生活空間充足，嚴禁抗生素投餵", img: "🐣" },
+                    { stage: "放養採食", date: "每日 08:00", desc: "戶外林地低密度活動，採食狼尾草", img: "🐔" },
+                    { stage: "產卵收集", date: "當日採收", desc: "全自動洗選除菌包裝，確保無沙門氏菌", img: "🥚", current: true },
+                    { stage: "冷鏈配送", date: "24h 內", desc: "保證產地直達餐桌，最新鮮的保證", img: "🚚" }
+                ]
+            },
+            orange: {
+                name: "福興茂谷柑",
+                batch: "BATCH: TX-2026-OR03",
+                desc: "福興南和休閒農業區山坡低密度栽培，陽光充足、排水良好，果皮薄亮而甜度濃烈。",
+                temp: "25.8 °C",
+                humid: "50.2 %",
+                certifications: ["TAP 產銷履歷", "石虎保育標章"],
+                timeline: [
+                    { stage: "春芽發育", date: "03-10", desc: "花蕾成形，病蟲害早期干預", img: "🍃" },
+                    { stage: "謝花著果", date: "04-12", desc: "小果密集著色，控制水分供給", img: "🌸" },
+                    { stage: "人工套袋", date: "07-20", desc: "防曬防蟲，保障表皮光鮮無瑕", img: "🍊", current: true },
+                    { stage: "辭水採收", date: "11-30", desc: "微辭水熟成，酸甜風味達黃金比例", img: "🚚" }
+                ]
+            },
+            pomelo: {
+                name: "3J果園 南和老欉文旦",
+                batch: "BATCH: TX-2026-PO04",
+                desc: "源自福興南和社區3J果園，傳承自民國73年父親親手栽種的老欉。果肉細緻、汁水充沛，堅持自產自銷與精緻健康化管理。",
+                temp: "26.2 °C",
+                humid: "61.5 %",
+                certifications: ["無農藥残留檢驗", "友善農業標章"],
+                timeline: [
+                    { stage: "剪枝冬眠", date: "01-15", desc: "重剪枯老細枝，保留充沛底蓄養分", img: "✂️" },
+                    { stage: "著果生長", date: "04-18", desc: "幼果已成形，進行微氣候調濕防護", img: "🟢" },
+                    { stage: "大果熟成", date: "07-15", desc: "果肉纖維柔化中，嚴格監測甜度", img: "🍐", current: true },
+                    { stage: "白露辭水", date: "08-28", desc: "白露節氣前夕進行人工採摘與自然辭水", img: "🚚" }
+                ]
+            }
+        };
+
+        const milestonesDb = {
+            1: {
+                title: "Phase 1: 地基建置 (Month 1 - Month 3)",
+                desc: "主要專注於嚴選通霄優良契作農產（包含彩虹玉米與牧草蛋），並與苗栗區域冷鏈物流中心完成 ERP 系統串接與自動扣款金流壓力測試。為 D2C 品牌打下穩固的地基。"
+            },
+            2: {
+                title: "Phase 2: OMO 導流啟動 (Month 4 - Month 9)",
+                desc: "配合白沙屯媽祖徒步進香、通霄沙雕藝術節等重大巨型線下流量事件，部署多個實體體驗 QR Code 掃碼節點。並配合 KOC 社群短影音開箱宣傳，最大化降低客戶取得成本 (CAC)."
+            },
+            3: {
+                title: "Phase 3: 數據深化與 LTV 極大化 (Month 10 - Month 12)",
+                desc: "全面推行「通霄產地直送訂閱箱」，利用累積的第一方 CRM 顧客數據，預測消費者回購週期，達到定期定額自動扣款的穩定商業模式。目標是實現平台與小農雙贏。"
+            }
+        };
+
+        // Artisan Stories Database (Deep Emotional Background - Integrated with 3J Orchard)
+        const storiesDb = {
+            biaoyu: {
+                author: "魏趨順",
+                role: "標裕牧場創辦人",
+                tag: "全國首家認證土雞場",
+                emoji: "🐔",
+                quote: "「想起因癌症病過世的家父，心中便有一股使命感，驅使我堅持下去飼養【健康、安全、美味】的土雞。」",
+                text: "民國八十四年間回到苗栗鄉下，接下父親養殖雞隻副業並積極參加各種農業培訓及安全農業講習。期間家父罹癌過世並經數年研究飼養，於民國九十年取得全國第一家經政府認證的土雞養殖牧場，進而推出「健康放走雞」系列雞肉產品。隔年，為使產品更健康，推出全國第一家１００％全程使用天然植物性飼糧的「吃『素』土雞」，並把阿嬤養雞的味道找回來。民國九十六年亦取得產銷履歷認證。這些年間，由不懂到獲得消費大眾信任期間，嚐盡不少苦頭及財務問題，一度心灰意冷，萌生退意。但想起因病過世的家父，心中便有一股使命感，趨使我堅持下去飼養【健康、安全、美味】的土雞，讓更多消費大眾能吃得更健康、安心。",
+                milestones: [
+                    { year: "民國 84 年", event: "返鄉承接副業" },
+                    { year: "民國 90 年", event: "首家政府認證土雞場" },
+                    { year: "民國 91 年", event: "推動吃素土雞" }
+                ]
+            },
+            threej: {
+                author: "三胞胎兄弟",
+                role: "3J果園 第二代傳承人",
+                tag: "南和老欉文旦傳承者",
+                emoji: "🍐",
+                quote: "「民國73年11月23日，父親種下第一顆柚子樹，開啟了我們與土地的緣分。」",
+                text: "民國七十三年十一月二十三日，父親在這片土地種下第一顆柚子樹，開啟了我們與土地的緣分。民國一○二年，我們三胞胎兄弟決定回到苗栗通霄承接這片充滿兒時記憶的柚子園，並正式創立「3J果園」，延續父親的用心與耕作傳承。我們堅持自產自銷，用心栽種老欉文旦、西施柚、砂糖橘和帝王柑。雖然返鄉務農充滿挑戰，但我們三兄弟發揮各自專長齊心協力，引進現代化智慧溫濕度監測與友善草生栽培技術。我們為每一顆果實注入對未來的期待，希望把這份安心、爆甜的多汁果香，親自傳遞給支持在地小農的您。",
+                milestones: [
+                    { year: "73 年 11 月", event: "父親種下第一株柚子樹" },
+                    { year: "102 年", event: "三胞胎兄弟接手創立 3J果園" },
+                    { year: "2026 年", event: "攜手雲端通霄推行一期一會主題箱" }
+                ]
+            },
+            wenabo: {
+                author: "溫阿伯",
+                role: "五北里契作小農",
+                tag: "彩虹玉米傳承40年",
+                emoji: "👨‍🌾",
+                quote: "「這片沙質地海風很大，但卻能把彩虹玉米吹得格外香Q，這都是土地的秘密。」",
+                text: "在通霄五北里耕作了快四十個年頭，溫阿伯見證了青年人口外流、農田荒蕪的困境。然而，他始終堅守著這片佔全台灣九成產量的彩虹玉米（黑糯玉米）。「以前大家都覺得我們玉米特別，但在傳統菜市場總是賣不上好價錢。」直到加入雲端通霄D2C平台，平台透過生長時光機、即時數據讓消費者親眼看見玉米的成長。阿阿伯說，當看到大都市的小家庭每個月透過訂閱制收到他親手採收的玉米、並在社群上開箱分享時，那種被尊重的榮譽感，是這輩子最大的滿足。",
+                milestones: [
+                    { year: "1986 年", event: "首度栽種黑糯玉米" },
+                    { year: "2021 年", event: "轉型友善農法" },
+                    { year: "2026 年", event: "契作直面消費者" }
+                ]
+            },
+            pingding: {
+                author: "坪頂社區 鳳凰小農",
+                role: "放牧蛋產銷班代表",
+                tag: "石虎保育共榮標章",
+                emoji: "🥚",
+                quote: "[" + '"雖然山坡地灌溉極難，但低密度放牧卻讓雞隻無比快樂，下出來的牧草蛋連蛋黃都有紀錄！"' + "]",
+                text: "坪頂社區地勢高且多丘陵，長期面臨水資源不足。傳統農業在這邊難以施展，社區一度沒落。但近年來，一群中高齡返鄉農民自組「鳳凰產銷班」，化地形劣勢為優勢。他們利用山坡高低差進行低密度自然放養，並以自家培育的狼尾草、牧草及益生菌作為飼料。更在林地中推行友善農法，保護台灣一級保育類動物——石虎的棲息地。他們的努力不僅獲得了「石虎友善標章」與 HACCP 雙認證，更透過平台的一期一會主題箱，把這一顆顆富含生態大愛、飽滿紮實的牧草益生蛋送往全台家庭，翻轉了乾旱社區的宿命。",
+                milestones: [
+                    { year: "民國 102 年", event: "鳳凰產銷班成立" },
+                    { year: "民國 109 年", event: "取得石虎保育標章" },
+                    { year: "2026 年", event: "年出貨突破 10 萬顆" }
+                ]
+            }
+        };
+
+        const omoSpotsDb = {
+            temple: {
+                title: "白沙屯拱天宮 OMO 節點",
+                scan: "遊客在拱天宮周邊商家，掃描「帶著媽祖的祝福」特製 QR Code，除獲得彩虹玉米與牧草蛋最新生長數據外，還能一鍵綁定該合作地標商戶。",
+                comm: "當遊客回到居住城市在線上「續訂」主題箱，系統將自動將該訂單金額 of 10% 預存，源源不絕自動分潤結算回饋給拱天宮的推薦商家，創造永續循環收益。"
+            },
+            ranch: {
+                title: "飛牛牧場 OMO 體驗節點",
+                scan: "在飛牛牧場入口、歐式牛舍或野餐區設置互動掃碼板。提供現場遊客體驗「產地直送乳製品及鮮果主題箱」一鍵預訂。",
+                comm: "遊客於線下試吃或體驗後掃碼，在線上產生的每筆訂閱或回購，都將計入飛牛牧場引流分潤機制，提升休閒牧場與電商系統的跨界合作深度。"
+            },
+            salt: {
+                title: "臺鹽通霄精鹽廠 OMO 節點",
+                scan: "精鹽廠為遊客家庭聚會重要觀光區。在鹽來館及海洋溫泉泡腳溪旁部署 OMO 節點，引導參觀者探索並訂閱包含通霄鹽滷豆花、越光米及新鮮茂谷柑的主題箱。",
+                comm: "利用實體精鹽廠的高大眾流量優勢，吸引大量新會員綁定。線上回購佣金自動分潤，並共同開發精鹽廠專屬特產品。"
+            },
+            trail: {
+                title: "挑鹽古道 OMO 健行節點",
+                scan: "針對熱愛戶外登山、人文歷史的遊客，在挑鹽古道沿途及城南落羽松大道部署「綠色低碳健康 OMO 節點」，掃碼一鍵獲取 AI 健行能量食譜與補給箱訂購方案。",
+                comm: "推薦在地有機冷鏈蔬菜箱、放牧雞滴雞精，提供給健行運動客群。每次扣款分潤回饋給在地維護古道的創生團隊，保護古道人文環境。"
+            }
+        };
+
+        // Initialize App & Charts on DOM Ready
+        window.onload = function() {
+            lucide.createIcons();
+            
+            // 🎬 初始化輕量化「海風暖光」Canvas 漂移動態背景
+            initAmbientBackground();
+
+            // Render Age Distribution Chart (Chart.js)
+            const ctxAge = document.getElementById('ageDistributionChart').getContext('2d');
+            new Chart(ctxAge, {
+                type: 'doughnut',
+                data: {
+                    labels: ['65歲以上 (高齡人口)', '15-64歲 (中壯年勞動力)', '0-14歲 (幼年人口)'],
+                    datasets: [{
+                        data: [24.89, 66.82, 8.29],
+                        backgroundColor: ['#ef4444', '#e7e5de', '#059669'],
+                        borderWidth: 0,
+                        hoverOffset: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 16,
+                                font: { weight: 'bold', size: 11 },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.parsed}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Render LTV Growth Chart (Chart.js)
+            const ctxLtv = document.getElementById('ltvCurveChart').getContext('2d');
+            new Chart(ctxLtv, {
+                type: 'line',
+                data: {
+                    labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+                    datasets: [{
+                        label: '模擬累積 LTV 價值成長 (TWD)',
+                        data: [8000, 22000, 45000, 85000, 140000, 210000, 290000, 380000, 480000, 580000, 680000, 780000],
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.08)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#059669',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.35
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(28, 25, 23, 0.95)',
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    return ` 累積 LTV: NT$ ${context.parsed.y.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f5f4f0' },
+                            ticks: {
+                                callback: function(val) { return '$' + val/1000 + 'k'; }
+                            }
+                        },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Initialize dynamic contents
+            updateMilestoneContent(1);
+            selectCrop('corn', document.querySelector('.crop-btn'));
+            selectStory('biaoyu', document.querySelector('.story-tab'));
+
+            // Slider Listener
+            document.getElementById('milestoneSlider').addEventListener('input', function(e) {
+                updateMilestoneContent(e.target.value);
+            });
+        };
+
+        // 🌊 Canvas 「海風暖光」漂移粒子繪製引擎
+        function initAmbientBackground() {
+            const canvas = document.getElementById('ambientWindBg');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 45; // 保持輕量，保障手機端流暢度
+            const colors = [
+                'rgba(5, 150, 105, 0.12)',  // 翡翠綠 (12% opacity)
+                'rgba(245, 158, 11, 0.12)', // 暖心琥珀金 (12% opacity)
+                'rgba(16, 185, 129, 0.10)', // 天然草本綠 (10% opacity)
+                'rgba(253, 230, 138, 0.15)' // 白沙屯保佑金 (15% opacity)
+            ];
+
+            class WindParticle {
+                constructor() {
+                    this.reset();
+                    this.y = Math.random() * height; // 載入時隨機分布於整個螢幕
+                }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = -20;
+                    if (Math.random() > 0.4) {
+                        this.x = -20;
+                        this.y = Math.random() * height;
+                    }
+                    this.size = Math.random() * 12 + 6; // 粒子大小微調放大 (6px - 18px)，使其清晰可見
+                    this.speedX = Math.random() * 0.35 + 0.15; // 向右飄移 (代表海風)
+                    this.speedY = Math.random() * 0.18 + 0.08; // 微幅向下漂移
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.spin = Math.random() * 0.008 - 0.004;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.angle += this.spin;
+                    
+                    // 風阻晃動感
+                    this.x += Math.sin(this.angle) * 0.05;
+
+                    // 越界重置
+                    if (this.x > width + 20 || this.y > height + 20) {
+                        this.reset();
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new WindParticle());
+            }
+
+            function drawLoop() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(drawLoop);
+            }
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            drawLoop();
+        }
+
+        // Scroll listener for premium sticky nav shadow
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 30) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+
+        // Dynamic Milestone logic
+        function updateMilestoneContent(phaseId) {
+            const data = milestonesDb[phaseId];
+            const content = document.getElementById('milestoneContent');
+            content.innerHTML = `
+                <h4 class="font-black text-emerald-800 text-lg mb-2">${data.title}</h4>
+                <p class="text-stone-600 text-sm leading-relaxed">${data.desc}</p>
+            `;
+        }
+
+        // Artisan Story Switcher Logic
+        function selectStory(storyId, tabElement) {
+            selectedStoryId = storyId;
+            const tabs = document.querySelectorAll('#storyTabs button');
+            tabs.forEach(tab => {
+                tab.className = "story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm";
+            });
+            tabElement.className = "story-tab p-5 bg-white rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm story-tab-active border-2";
+
+            const data = storiesDb[storyId];
+            document.getElementById('storyAuthor').innerText = data.author;
+            document.getElementById('storyRole').innerText = data.role;
+            document.getElementById('storyTag').innerText = data.tag;
+            document.getElementById('storyBigEmoji').innerText = data.emoji;
+            document.getElementById('storyQuote').innerText = data.quote;
+            document.getElementById('storyText').innerText = data.text;
+
+            // Render Achievements Timeline
+            const milestoneContainer = document.getElementById('storyMilestones');
+            milestoneContainer.innerHTML = '';
+            data.milestones.forEach(m => {
+                milestoneContainer.innerHTML += `
+                    <div class="p-3 bg-stone-50 rounded-xl border border-stone-200/50 shadow-sm animate-in fade-in duration-300">
+                        <span class="text-xs font-bold text-emerald-600 font-mono">${m.year}</span>
+                        <p class="text-xs font-bold text-stone-800 mt-1 leading-snug">${m.event}</p>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // Crop Traceability Switcher Logic
+        function selectCrop(cropId, btnElement) {
+            selectedCropId = cropId;
+            const buttons = document.querySelectorAll('#cropButtons button');
+            buttons.forEach(btn => {
+                btn.className = "crop-btn p-5 bg-white border border-stone-200 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm";
+            });
+            btnElement.className = "crop-btn p-5 bg-white border-2 border-emerald-600 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm shadow-emerald-50";
+
+            const data = cropsDb[cropId];
+            document.getElementById('cropName').innerText = data.name;
+            document.getElementById('cropBatch').innerText = data.batch;
+            document.getElementById('cropDesc').innerText = data.desc;
+            document.getElementById('iotTemp').innerText = data.temp;
+            document.getElementById('iotHumid').innerText = data.humid;
+
+            // Render Certifications
+            const certsContainer = document.getElementById('cropCertifications');
+            certsContainer.innerHTML = '';
+            data.certifications.forEach(cert => {
+                certsContainer.innerHTML += `
+                    <div class="p-3 bg-stone-50 border border-stone-200/60 rounded-xl text-center text-xs font-bold text-stone-700 flex items-center justify-center gap-1 shadow-sm">
+                        <span>🛡️</span> ${cert}
+                    </div>
+                `;
+            });
+
+            // Render Growth Timeline
+            const timelineContainer = document.getElementById('cropTimeline');
+            timelineContainer.innerHTML = '';
+            data.timeline.forEach(step => {
+                const isCurrent = step.current;
+                timelineContainer.innerHTML += `
+                    <div class="flex gap-4 items-start relative group">
+                        <div class="absolute left-[-31px] top-1 w-4.5 h-4.5 rounded-full border-4 ${isCurrent ? 'bg-emerald-600 border-emerald-100 ring-4 ring-emerald-50' : 'bg-stone-300 border-white'}"></div>
+                        <div class="w-12 h-12 bg-stone-50 rounded-2xl border border-stone-200/50 flex items-center justify-center text-2xl shadow-sm">
+                            ${step.img}
+                        </div>
+                        <div class="flex-1 bg-stone-50 p-4 rounded-2xl border border-stone-200/60 shadow-sm">
+                            <div class="flex justify-between items-center mb-1">
+                                <h5 class="font-black text-sm ${isCurrent ? 'text-emerald-700' : 'text-stone-800'}">${step.stage}</h5>
+                                <span class="text-[10px] font-mono text-stone-400 font-bold">${step.date}</span>
+                            </div>
+                            <p class="text-[11px] text-stone-500 font-medium leading-relaxed">${step.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Subscription Wizard Step Manager
+        function goToStep(stepNum) {
+            document.getElementById('subStep1').classList.add('hidden');
+            document.getElementById('subStep2').classList.add('hidden');
+            document.getElementById('subStep3').classList.add('hidden');
+
+            document.getElementById('stepIndicator1').className = "text-stone-400";
+            document.getElementById('stepIndicator2').className = "text-stone-400";
+            document.getElementById('stepIndicator3').className = "text-stone-400";
+
+            document.getElementById('subStep' + stepNum).classList.remove('hidden');
+            document.getElementById('stepIndicator' + stepNum).className = "text-emerald-600 font-black";
+
+            if (stepNum === 2) {
+                const planData = selectedPlan === 'monthly' ? plansDb.monthly : plansDb.quarterly;
+                document.getElementById('summaryPlanName').innerText = planData.title;
+                
+                // 動態重新計算折抵後總價 (Dynamic discount calculation)
+                const basePrice = parseInt(planData.price.replace(',', ''));
+                const finalPrice = basePrice - appliedDiscount;
+                
+                document.getElementById('summaryPrice').innerText = '$' + finalPrice.toLocaleString();
+                
+                if (appliedDiscount > 0) {
+                    document.getElementById('summaryDiscountRow').classList.remove('hidden');
+                    document.getElementById('summaryDiscountAmount').innerText = '-$' + appliedDiscount;
+                } else {
+                    document.getElementById('summaryDiscountRow').classList.add('hidden');
+                }
+            }
+        }
+
+        const plansDb = {
+            monthly: { title: "月月保平安 (月配方案)", price: "1,280" },
+            quarterly: { title: "四季如意 (季配方案)", price: "3,500" }
+        };
+
+        function choosePlan(planId) {
+            selectedPlan = planId;
+            if (planId === 'monthly') {
+                document.getElementById('planMonthly').className = "p-6 rounded-3xl border-4 border-emerald-600 bg-white cursor-pointer relative transition-all";
+                document.getElementById('planQuarterly').className = "p-6 rounded-3xl border-4 border-transparent bg-stone-50 cursor-pointer relative transition-all";
+                document.getElementById('checkIconMonthly').innerHTML = '<i data-lucide="check-circle" class="w-6 h-6"></i>';
+                document.getElementById('checkIconQuarterly').innerHTML = '<i data-lucide="circle" class="w-6 h-6"></i>';
+            } else {
+                document.getElementById('planMonthly').className = "p-6 rounded-3xl border-4 border-transparent bg-stone-50 cursor-pointer relative transition-all";
+                document.getElementById('planQuarterly').className = "p-6 rounded-3xl border-4 border-emerald-600 bg-white cursor-pointer relative transition-all";
+                document.getElementById('checkIconMonthly').innerHTML = '<i data-lucide="circle" class="w-6 h-6"></i>';
+                document.getElementById('checkIconQuarterly').innerHTML = '<i data-lucide="check-circle" class="w-6 h-6"></i>';
+            }
+            lucide.createIcons();
+        }
+
+        // Promo Code Verification logic
+        function applyPromoCode() {
+            const codeInput = document.getElementById('promoInput');
+            const msg = document.getElementById('promoMessage');
+            if (!codeInput || !msg) return;
+
+            const code = codeInput.value.trim().toUpperCase();
+
+            if (code === 'TONGXIAO50') {
+                appliedDiscount = 50;
+                currentPromoCode = code;
+                msg.innerText = '🎉 優惠碼套用成功！已為您折抵 NT$ 50 元。';
+                msg.className = 'text-[10px] font-bold mt-2 text-emerald-600';
+                msg.classList.remove('hidden');
+                
+                // 重新渲染 Step 2 價格明細
+                goToStep(2);
+            } else if (code === '') {
+                msg.innerText = '請輸入優惠代碼。';
+                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
+                msg.classList.remove('hidden');
+            } else {
+                msg.innerText = '❌ 無效的優惠代碼，請重新輸入。';
+                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
+                msg.classList.remove('hidden');
+            }
+        }
+
+        function processCheckout() {
+            const payBtn = document.getElementById('payBtn');
+            payBtn.innerText = '安全加密金流傳輸中...';
+            payBtn.disabled = true;
+            setTimeout(() => {
+                goToStep(3);
+                payBtn.innerText = '確認授權並扣款';
+                payBtn.disabled = false;
+            }, 1800);
+        }
+
+        function resetWizard() {
+            appliedDiscount = 0;
+            currentPromoCode = '';
+            const promoInput = document.getElementById('promoInput');
+            const promoMsg = document.getElementById('promoMessage');
+            if (promoInput) promoInput.value = '';
+            if (promoMsg) promoMsg.classList.add('hidden');
+
+            goToStep(1);
+            document.getElementById('aiRecipeResult').classList.add('hidden');
+            document.getElementById('aiBlessingResult').classList.add('hidden');
+            document.getElementById('couponResult').classList.add('hidden');
+            document.getElementById('shareButtonsContainer').classList.remove('hidden');
+        }
+
+        // Gemini API Implementation with Exponential Backoff
+        async function fetchGeminiAI(prompt, sysInstruction = "") {
+            const inputKey = document.getElementById('globalApiKey').value.trim();
+            const activeKey = inputKey || apiKey;
+            if (!activeKey) {
+                // Returns smart mock if no key provided
+                return simulateLocalAI(prompt);
+            }
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }]
+            };
+            if (sysInstruction) {
+                payload.systemInstruction = { parts: [{ text: sysInstruction }] };
+            }
+
+            let currentDelay = 1000;
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) throw new Error("API call error");
+                    const data = await res.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，阿通伯暫時無法取得答覆。";
+                } catch (err) {
+                    if (i === 4) return "系統連線逾時，自動切換至在地創生模擬引擎回覆：\n\n" + await simulateLocalAI(prompt);
+                    await new Promise(r => setTimeout(r, currentDelay));
+                    currentDelay *= 2;
+                }
+            }
+        }
+
+        // Gemini API Feature: Ad Copywriter Generation
+        async function generateArtisanAdCopy() {
+            const product = document.getElementById('aiStoryProduct').value;
+            const tone = document.getElementById('aiStoryTone').value;
+            const btn = document.getElementById('artisanAdBtn');
+            const resultPanel = document.getElementById('aiArtisanAdResult');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="animate-spin"><i data-lucide="loader-2" class="w-4 h-4"></i></i> 正在編織品牌故事...`;
+            lucide.createIcons();
+
+            const prompt = `請為通霄 D2C 品牌商城撰寫一篇社群行銷宣傳貼文。
+主打聯名產品組合：${product}
+期望文案風格與語調：${tone}
+請結合以下通霄職人故事脈絡：
+- 標裕牧場魏趨順大哥，承接罹癌過世父親的「健康放走雞」信念，研發首創100%吃素土雞。
+- 3J果園三胞胎兄弟接棒傳承自民國73年父親手植的第一株老欉文旦柚。
+- 五北里溫阿伯堅持守護40年黑糯彩虹玉米。
+- 坪頂社區鳳凰放牧蛋產銷班在乾旱山坡地低密度放養，與石虎生態保育共榮。
+
+貼文格式要求：
+1. 吸引目光的感性大標題
+2. 層次感豐富的故事與產品關聯導入
+3. 誠摯邀請大家預定或訂閱「一期一會主題箱」，並說明分享至社群能解鎖「下期自動抵抵折扣 50 元」的優惠券碼【TONGXIAO50】。
+4. 加上合適的社群 Hashtags。請用溫暖人心的繁體中文撰寫，字數約 300-400 字。`;
+
+            const sysInstruction = "你是一位擅長寫熱銷地方創生、文創與小農情感品牌故事的頂級行銷企劃與文案總監，筆觸細膩、有畫面感、且充滿轉化力。";
+            
+            const resText = await fetchGeminiAI(prompt, sysInstruction);
+            resultPanel.innerText = resText;
+            resultPanel.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ✨ 一鍵生成黃金行銷文案`;
+            lucide.createIcons();
+        }
+
+        // Intelligent local simulation fallback (Updated with Order, Subscription, Contact, Coupon and Ad Copy info)
+        function simulateLocalAI(prompt) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    if (prompt.includes("食譜")) {
+                        resolve("👨‍🌾 阿通伯推薦料理：【初夏通霄彩虹玉米排骨鮮湯】\n\n食材：五北里彩虹玉米1根、坪頂牧草蛋2顆、排骨半斤。\n做法：\n1. 將彩虹玉米切段，排骨洗淨汆燙。\n2. 將排骨與彩虹玉米冷水下鍋，大火煮滾後轉小火燉煮35分鐘，鎖住玉米天然花青素風味。\n3. 起鍋前打入坪頂牧草蛋花，增添滑順蛋香，最後加少許鹽調味即可享用！\n風味特色：彩虹玉米口感香Q有彈性，配合新鮮牧草蛋，是一道蘊含通霄風土甘甜味的清爽湯品！");
+                    } else if (prompt.includes("祝禱")) {
+                        resolve("🌸 白沙屯拱天宮媽祖專屬祝禱文：\n\n弟子/信女 敬捧通霄大地恩賜，誠心拜謝白沙屯天上聖母。願媽祖慈悲，保佑您與家人身心安康、闔家平安。願此份來自通霄純淨風土的一期一會禮盒，滋養您的身體，帶著神明溫暖的守護，生活順心、事業如意。保庇平安！");
+                    } else if (prompt.includes("社群行銷宣傳貼文")) {
+                        resolve(`🌸 【帶著媽祖的祝福，把通霄溫暖美味帶回家】 🌸\n\n「民國73年11月23日，父親在南和社區種下第一株柚子樹；魏趨順大哥想起罹癌過世的家父，發誓要養出最健康的吃素放走雞...」\n\n今年中秋，通霄最溫暖的兩個傳承職人聯名了！3J果園的三胞胎兄弟承接了父親的老欉柚子，與全台首家產銷履歷驗證的標裕牧場攜手，推出期間限定【老欉文旦 × 吃素放走雞滴雞精】祈福禮盒。🎁\n\n每一顆柚子，都飽含了40年的家族堅持；每一滴雞精，都是對健康美味的使命守護。這份禮盒更特別帶到白沙屯拱天宮「代客過爐」，讓媽祖的保庇溫暖您與家人的心。\n\n✨ 誠摯推薦您加入「一期一會主題箱」月配訂閱！現在訂閱並分享，使用專屬優惠碼【TONGXIAO50】立折 50 元，支持返鄉小農，守護地方永續！\n\n#雲端通霄 #D2C品牌電商 #3J果園 #標裕牧場 #白沙屯媽祖 #地方創生 #吃素土雞 #老欉文旦`);
+                    } else if (prompt.includes("魏趨順") || prompt.includes("土雞") || prompt.includes("放走雞")) {
+                        resolve("🐔 關於標裕牧場魏趨順大哥：他是全國第一家取得產銷履歷與政府認證的土雞達人。他研發的100%「吃素土雞」，不投抗生素、無化學添加，找回了阿嬤年代那口最純粹、最天然的健康雞肉味與香濃滴雞精！");
+                    } else if (prompt.includes("3J") || prompt.includes("文旦") || prompt.includes("三胞胎") || prompt.includes("果園")) {
+                        resolve("🍐 關於通霄南和【3J果園】：這是由三胞胎兄弟在民國102年回到家鄉共同創立的品牌。承接了父親在民國73年種下的第一顆老欉柚子樹，堅持自然農法與自產自銷，用心栽培出甘甜多汁、充滿家族愛與責任的文旦及多品種柑橘！");
+                    } else if (prompt.includes("甜度")) {
+                        resolve("🌽 彩虹玉米的甜度通常在 14-16 Brix。與一般超甜玉米不同，彩虹玉米黑黃紅相間，蘊含高天然花青素，它最厲害的是其Q彈飽滿的齒頰嚼勁，甜中帶有高雅的穀物香氣！");
+                    } else if (prompt.includes("分潤")) {
+                        resolve("⛩️ 我們的 OMO 虛實融合機制非常先進！當遊客在白沙屯拱天宮現場掃描商家的特製 QR Code 並綁定，遊客回家後在線上訂閱的每筆自動扣款訂單，系統都將透過分潤算法將 10% 佣金自動回饋發送給該店家。這真正實現了遊客離店不斷線，扶持在地實體經濟！");
+                    } else if (prompt.includes("補償")) {
+                        resolve("🛡️ 氣候補償機制是我們的 D2C 品牌責任感體現。農業往往深受極端氣候影響。當天災導致彩虹玉米等歉收時，我們主動保障消費者與小農。我們會將生鮮替換為等值的在地加工品（例如標裕滴雞精），同時協助受災小農申請救助金。我們共享風險、守護產地！");
+                    } else if (prompt.includes("訂單") || prompt.includes("進度") || prompt.includes("配送")) {
+                        resolve("📦 【訂單與配送查詢說明】\n\n阿通伯報你知！只要登入我們的「會員中心」，點擊「訂單追蹤」，就能即時查看這期主題箱的打包與冷鏈出貨狀態。\n\n我們所有的生鮮箱都配備了【IoT 溫溼度即時監控】，你可以直接在網頁上看見配送車內的即時溫度，保證送到你家門口時，彩虹玉米和牧草蛋都是最新鮮、最冰涼的狀態啦！如有緊急物流問題，也可以隨時撥打小農契作專線：(037) 752-110。");
+                    } else if (prompt.includes("訂閱") || prompt.includes("方案") || prompt.includes("暫停") || prompt.includes("取消")) {
+                        resolve("📅 【訂閱方案彈性管理】\n\n我們的「一期一會主題箱」非常彈性！你只要進入「訂閱管理中心」：\n\n1. 隨時可以【修改配送地址】或【更換收件人】（例如中秋節這期直接寄給長輩送禮）。\n2. 若出國或短期不在家，可一鍵點擊【暫停配送】，當月就不會扣款，下個月再自動恢復。\n3. 無任何綁約綁死，隨時可自主【取消訂閱】，零摩擦阻力！我們對自己的農產品質非常有信心，不怕你比較！");
+                } else if (prompt.includes("聯絡") || prompt.includes("契作") || prompt.includes("合作") || prompt.includes("電話") || prompt.includes("聯絡方式")) {
+                        resolve("📞 【通霄小農聯絡與契作合作資訊】\n\n阿通伯熱情歡迎各界合作！不論你是想加入契作的小農，還是想集體團購的企業夥伴：\n\n• 契作辦公室：苗栗縣通霄鎮南和里121縣道小農電商合作社\n• 聯絡專線：(037) 752-110 (週一至週五 09:00 - 17:00)\n• 合作信箱：coop@tongxiao.farm\n• 在地合作窗口：\n  - 標裕牧場 (放走雞、滴雞精): 魏大哥\n  - 3J果園 (老欉文旦、柑橘): 三胞胎兄弟\n  - 五北里玉米班 (彩虹玉米): 溫阿伯\n\n加入我們，一起用 D2C 商業模式翻轉傳統老農村，讓通霄好物走向全台灣！");
+                } else if (prompt.includes("券") || prompt.includes("折價") || prompt.includes("折扣") || prompt.includes("TONGXIAO50")) {
+                        resolve("🎫 【50元分享優惠券折抵說明】\n\n恭喜你拿到我們的【TONGXIAO50】優惠代碼！\n\n使用方式非常簡單：\n裝你完成首期訂閱後，將專案分享至 FB 或 LINE，系統就會自動將該優惠券【綁定至您的扣款帳戶】。在下一個月的定期定額扣款中，系統會直接自動扣減 50 元喔！不需手動輸入，省時又方便！感謝你成為我們的「通霄品牌推廣大使」！");
+                    } else {
+                        resolve("👨‍🌾 呵呵！通霄在地的故事可多著呢。從魏趨順大哥的吃素土雞與滴雞精、溫阿伯的彩虹玉米、3J果園三胞胎兄弟的老欉文旦，到我們 D2C 商城的自動扣款保障機制，有什麼想了解的隨時告訴阿通伯！");
+                    }
+                }, 1000);
+            });
+        }
+
+        // 🚀 Premium Quick Service Navigation Handler
+        function quickNavigate(targetId) {
+            if (targetId === 'stories') {
+                const element = document.getElementById('stories');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'traceability') {
+                const element = document.getElementById('traceability');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'subscription') {
+                const element = document.getElementById('subscription');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    goToStep(1); // 確保是方案選擇頁
+                }
+            } else if (targetId === 'omomap') {
+                const element = document.getElementById('omomap');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+            } else if (targetId === 'member') {
+                const element = document.getElementById('chatbot');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    // 自動替會員在 AI 聊天室提問配送進度
+                    quickAsk('我要如何查詢我的訂閱方案與配送進度？');
+                }
+            } else if (targetId === 'cart') {
+                const element = document.getElementById('subscription');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    goToStep(2); // 直接導向結帳與優惠碼扣抵頁！
+                }
+            }
+        }
+
+        // Trigger AI Recipe
+        async function triggerAiRecipe() {
+            const btn = document.getElementById('recipeBtn');
+            const resultPanel = document.getElementById('aiRecipeResult');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="animate-spin"><i data-lucide="loader-2" class="w-4 h-4"></i></i> AI 旬味計算中...`;
+            lucide.createIcons();
+
+            const prompt = "根據 5 月份通霄旬味箱食材：五北里彩虹玉米、坪頂牧草蛋、標裕滴雞精、福興茂谷柑，生成一份簡單有溫度的家庭創意食譜。用繁體中文。";
+            const resText = await fetchGeminiAI(prompt, "你是一位熱愛通霄土地的溫暖型男主廚，擅長用風土食材創造幸福家常菜。");
+            
+            resultPanel.innerText = resText;
+            resultPanel.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i> ✨ 獲取 AI 旬味食譜推薦`;
+            lucide.createIcons();
+        }
+
+        // Trigger AI Blessing
+        async function triggerAiBlessing() {
+            const btn = document.getElementById('blessingBtn');
+            const resultPanel = document.getElementById('aiBlessingResult');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="animate-spin"><i data-lucide="loader-2" class="w-4 h-4"></i></i> 正在向媽祖祈願中...`;
+            lucide.createIcons();
+
+            const prompt = "為剛訂閱了通霄一期一會主題箱的客人，生成一份溫暖人心的白沙屯媽祖祈福與風土祝禱詞。繁體中文。";
+            const resText = await fetchGeminiAI(prompt, "你是一位溫潤有禮的通霄地方耆老，對白沙屯媽祖信仰充滿虔敬，說話帶有長者的溫暖與對土地的感恩。");
+
+            resultPanel.innerText = resText;
+            resultPanel.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = `重新生成祈願祝禱文`;
+            lucide.createIcons();
+        }
+
+        // Simulate Share to Unlock Coupon Code
+        function simulateShare(platform) {
+            const container = document.getElementById('shareButtonsContainer');
+            const couponResult = document.getElementById('couponResult');
+            container.classList.add('hidden');
+            couponResult.classList.remove('hidden');
+        }
+
+        // OMO Interactive Map Spots Switcher
+        function selectOmoSpot(spotKey, btnElement) {
+            const buttons = document.querySelectorAll('#omomap button');
+            buttons.forEach(btn => {
+                btn.className = "absolute p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black";
+            });
+            btnElement.className = "absolute p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black ring-4 ring-emerald-100";
+
+            const data = omoSpotsDb[spotKey];
+            document.getElementById('omoTitle').innerText = data.title;
+            document.getElementById('omoScanDesc').innerText = data.scan;
+            document.getElementById('omoCommissionDesc').innerText = data.comm;
+        }
+
+        // Chatbot Functionality
+        async function handleSendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendChatMessage('user', text);
+            input.value = '';
+
+            const loadingId = appendChatLoading();
+            const reply = await fetchGeminiAI(text, "你是通霄在地數位創生導師阿通伯，說話和藹可親、熱情好客，專門推廣通霄的 D2C 品牌商務計畫、白沙屯媽祖信仰、彩虹玉米、放牧雞與牧草蛋，並善於用數據與信任說服大家支持訂閱制。當提到魏趨順、標裕牧場或放走雞時，記得要把他堅持抗癌父親的傳承信念、首家吃素土雞認證、產銷履歷等動人細節展現出來。當提到3J果園、三胞胎、文旦或柑橘時，必須生動講述三胞胎兄弟在民國102年回到南和社區，齊心將父親於民國73年種下的第一株老欉柚子樹發揚光大，並運用智慧農業自產自銷的幸福奮鬥故事。當使用者詢問關於訂單查詢、配送冷鏈追蹤、訂閱方案的更改、暫停或取消、或50元分享優惠券（TONGXIAO50）使用方法、小農辦公室電話(037)752-110等運營細節時，請務必給予具體、溫和且極具專業信賴感的詳細回答。");
+            removeChatLoading(loadingId);
+            appendChatMessage('ai', reply);
+        }
+
+        // Quick ask for Quick Navigation & FAQ
+        function quickAsk(questionText) {
+            appendChatMessage('user', questionText);
+            const loadingId = appendChatLoading();
+            simulateLocalAI(questionText).then(reply => {
+                removeChatLoading(loadingId);
+                appendChatMessage('ai', reply);
+            });
+        }
+
+        function appendChatMessage(role, text) {
+            const screen = document.getElementById('chatMessages');
+            const align = role === 'user' ? 'justify-end' : 'justify-start';
+            const bg = role === 'user' ? 'bg-emerald-600 text-white rounded-tr-none' : 'bg-white text-stone-700 border border-emerald-100/50 rounded-tl-none';
+            
+            screen.innerHTML += `
+                <div class="flex ${align} animate-in slide-in-from-bottom-2 duration-300">
+                    <div class="max-w-[85%] ${bg} p-4 rounded-3xl text-xs shadow-sm leading-relaxed whitespace-pre-wrap">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        function appendChatLoading() {
+            const screen = document.getElementById('chatMessages');
+            const loadingId = 'loading-' + Date.now();
+            screen.innerHTML += `
+                <div class="flex justify-start animate-pulse" id="${loadingId}">
+                    <div class="bg-white text-stone-400 p-4 rounded-3xl rounded-tl-none text-xs border border-stone-200/50 shadow-sm flex items-center gap-1.5 font-bold">
+                        阿通伯正在翻查產地紀錄... 👨‍🌾
+                    </div>
+                </div>
+            `;
+            screen.scrollTop = screen.scrollHeight;
+            return loadingId;
+        }
+
+        // Promo Code Verification logic
+        function applyPromoCode() {
+            const codeInput = document.getElementById('promoInput');
+            const msg = document.getElementById('promoMessage');
+            if (!codeInput || !msg) return;
+
+            const code = codeInput.value.trim().toUpperCase();
+
+            if (code === 'TONGXIAO50') {
+                appliedDiscount = 50;
+                currentPromoCode = code;
+                msg.innerText = '🎉 優惠碼套用成功！已為您折抵 NT$ 50 元。';
+                msg.className = 'text-[10px] font-bold mt-2 text-emerald-600';
+                msg.classList.remove('hidden');
+                
+                // 重新渲染 Step 2 價格明細
+                goToStep(2);
+            } else if (code === '') {
+                msg.innerText = '請輸入優惠代碼。';
+                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
+                msg.classList.remove('hidden');
+            } else {
+                msg.innerText = '❌ 無效的優惠代碼，請重新輸入。';
+                msg.className = 'text-[10px] font-bold mt-2 text-red-500';
+                msg.classList.remove('hidden');
+            }
+        }
+
+        function removeChatLoading(id) {
+            const element = document.getElementById(id);
+            if (element) element.remove();
+        }
+    </script>
+</body>
+</html>
