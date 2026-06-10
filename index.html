@@ -1,16 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW" class="scroll-smooth">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V5CX88G0E7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-V5CX88G0E7');
-</script>
-    <meta charset="UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>雲端上的通霄 - D2C 與 OMO 地方創生電子商務藍圖</title>
@@ -47,11 +37,6 @@
             background-color: #059669;
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
-        }
-        .story-tab-active {
-            border-color: #059669;
-            background-color: #ecfdf5;
-            color: #047857;
         }
 
         /* --- 自訂雙層流體漂移動畫 --- */
@@ -190,11 +175,11 @@
         </header>
 
         <!-- Main Content Container -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 space-y-36">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 space-y-36 animate-in fade-in duration-500">
 
-            <!-- 🚀 快速服務通道 (Quick Services Navigation Bar) -->
-            <section class="scroll-mt-28 -mt-16">
-                <div class="bg-white/80 backdrop-blur rounded-3xl p-6 shadow-xl border border-stone-200/60 max-w-4xl mx-auto">
+            <!-- 🚀 快速服務通道 (Quick Services Navigation Bar) - z-index 提升至 30 確保不被遮擋 -->
+            <section class="relative z-30 scroll-mt-28 -mt-16">
+                <div class="bg-white/90 backdrop-blur rounded-3xl p-6 shadow-xl border border-stone-200/60 max-w-4xl mx-auto">
                     <p class="text-center text-sm font-black text-emerald-700 tracking-widest uppercase mb-4">
                         ⚡ 雲端通霄 ‧ 快速服務通道
                     </p>
@@ -280,7 +265,7 @@
                             <h4 class="font-bold text-emerald-800 mb-3 flex items-center gap-2 text-xl">
                                 <span>🌱</span> 多元文化與風土交融
                             </h4>
-                            <p class="text-emerald-700 text-base leading-relaxed mb-4">
+                            <p class="text-emerald-700 text-base md:text-lg leading-relaxed mb-4">
                                 通霄擁有「西閩南、東客家」的豐富文化底蘊。五北里的彩虹玉米（佔全鎮 90% 產量）與坪頂社區轉型成功的「鳳凰產業」（放牧雞、牧草蛋、滴雞精），正急需高品牌溢價來帶動青年返鄉。
                             </p>
                             <div class="flex flex-wrap gap-2">
@@ -370,34 +355,34 @@
                     </p>
                 </div>
 
-                <!-- Story Navigation Tabs -->
+                <!-- Story Navigation Tabs (修復小農標籤字體大小、顏色深度與高亮可視性問題) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="storyTabs">
                     <button onclick="selectStory('biaoyu', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm story-tab-active border-2">
                         <span class="text-3xl">🐔</span>
                         <div>
-                            <h4 class="font-black text-sm text-stone-800">標裕牧場 魏趨順</h4>
-                            <span class="text-xs text-emerald-600 font-bold">吃「素」的健康放走雞</span>
+                            <h4 class="font-black text-base text-stone-800">標裕牧場 魏趨順</h4>
+                            <span class="text-sm text-stone-500 font-medium">吃「素」的健康放走雞</span>
                         </div>
                     </button>
                     <button onclick="selectStory('threej', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">🍐</span>
                         <div>
-                            <h4 class="font-black text-xs text-stone-400">3J果園 三胞胎兄弟</h4>
-                            <span class="text-xs text-stone-400 font-bold">老欉文旦的傳承故事</span>
+                            <h4 class="font-black text-base text-stone-800">3J果園 三胞胎兄弟</h4>
+                            <span class="text-sm text-stone-500 font-medium">老欉文旦的傳承故事</span>
                         </div>
                     </button>
                     <button onclick="selectStory('wenabo', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">👨‍🌾</span>
                         <div>
-                            <h4 class="font-black text-xs text-stone-400">五北社區 溫阿伯</h4>
-                            <span class="text-xs text-stone-400 font-bold">四十年的彩虹守護者</span>
+                            <h4 class="font-black text-base text-stone-800">五北社區 溫阿伯</h4>
+                            <span class="text-sm text-stone-500 font-medium">四十年的彩虹守護者</span>
                         </div>
                     </button>
                     <button onclick="selectStory('pingding', this)" class="story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm">
                         <span class="text-3xl">🥚</span>
                         <div>
-                            <h4 class="font-black text-xs text-stone-400">坪頂社區 鳳凰小農</h4>
-                            <span class="text-xs text-stone-400 font-bold">陡峭山坡的放牧生態蛋</span>
+                            <h4 class="font-black text-base text-stone-800">坪頂社區 鳳凰小農</h4>
+                            <span class="text-sm text-stone-500 font-medium">陡峭山坡的放牧生態蛋</span>
                         </div>
                     </button>
                 </div>
@@ -420,7 +405,7 @@
                             </div>
                         </div>
 
-                        <!-- Right column: The deep emotional journey -->
+                        <!-- Right column: The deep emotional journey (字體放大優化) -->
                         <div class="lg:col-span-8 space-y-6">
                             <div class="relative">
                                 <span class="text-5xl font-serif text-emerald-200 absolute -top-4 -left-2 -z-0">“</span>
@@ -434,7 +419,7 @@
 
                             <!-- Timeline milestones -->
                             <div class="pt-6 border-t border-stone-100 space-y-4">
-                                <h4 class="text-xs font-black text-stone-400 uppercase tracking-widest">奮鬥里程碑</h4>
+                                <h4 class="text-sm font-black text-stone-400 uppercase tracking-widest">奮鬥里程碑</h4>
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3" id="storyMilestones">
                                     <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
                                         <span class="text-xs font-bold text-stone-400 font-mono">民國 84 年</span>
@@ -459,7 +444,7 @@
                     <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/20 rounded-full blur-2xl"></div>
                     <div class="flex items-center gap-2">
                         <span class="text-2xl">✨</span>
-                        <h3 class="text-lg font-black text-emerald-950">AI 小農聯名行銷文案產生器 (社群導流飛輪)</h3>
+                        <h3 class="text-xl font-black text-emerald-950">AI 小農聯名行銷文案產生器 (社群導流飛輪)</h3>
                     </div>
                     <p class="text-sm md:text-base text-emerald-800 leading-relaxed font-medium">
                         我們自建的 D2C 品牌商城需要源源不絕的社群聲量。本工具利用 Gemini AI 實時編織職人的心血故事，一鍵將「產地價值與傳承精神」轉化為社群（FB / IG）爆款導流貼文，點燃社群裂變飛輪！
@@ -828,19 +813,19 @@
                     </h3>
                     <div class="relative w-full aspect-[4/3] bg-stone-100 rounded-3xl border border-stone-200 overflow-hidden shadow-inner">
                         <!-- Spot 1: White Sand Temple -->
-                        <button onclick="selectOmoSpot('temple', this)" class="absolute top-[15%] left-[25%] p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                        <button onclick="selectOmoSpot('temple', this)" class="absolute top-[15%] left-[25%] p-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
                             ⛩️ 白沙屯拱天宮
                         </button>
                         <!-- Spot 2: Flying Cow Ranch -->
-                        <button onclick="selectOmoSpot('ranch', this)" class="absolute top-[60%] left-[60%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                        <button onclick="selectOmoSpot('ranch', this)" class="absolute top-[60%] left-[60%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
                             🐄 飛牛牧場
                         </button>
                         <!-- Spot 3: Salt Factory -->
-                        <button onclick="selectOmoSpot('salt', this)" class="absolute top-[35%] left-[45%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                        <button onclick="selectOmoSpot('salt', this)" class="absolute top-[35%] left-[45%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
                             🧂 臺鹽通霄精鹽廠
                         </button>
                         <!-- Spot 4: Historic Trail -->
-                        <button onclick="selectOmoSpot('trail', this)" class="absolute top-[75%] left-[30%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-xs font-black">
+                        <button onclick="selectOmoSpot('trail', this)" class="absolute top-[75%] left-[30%] p-4 bg-stone-800 hover:bg-stone-900 text-white rounded-2xl flex items-center gap-2 shadow-lg transition-transform hover:scale-105 active:scale-95 text-sm font-black">
                             🚶 挑鹽古道
                         </button>
                         <div class="absolute bottom-4 left-4 bg-white/80 px-3 py-1.5 rounded-xl text-xs font-bold text-stone-400">
@@ -965,8 +950,8 @@
 
     </div> <!-- 🌟 結束內容分層包裹容器 -->
 
-    <!-- 👤 互動式會員中心浮動視窗 (Member Portal Modal - New Feature) -->
-    <div id="memberModal" class="fixed inset-0 pointer-events-none z-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <!-- 👤 互動式會員中心浮動視窗 (Member Portal Modal) -->
+    <div id="memberModal" class="fixed inset-0 hidden z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
         <!-- 遮罩背景 -->
         <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm pointer-events-auto" onclick="closeMemberModal()"></div>
         
@@ -1221,7 +1206,7 @@
                 role: "放牧蛋產銷班代表",
                 tag: "石虎保育共榮標章",
                 emoji: "🥚",
-                quote: "[" + '"雖然山坡地灌溉極難，但低密度放牧卻讓雞隻無比快樂，下出來的牧草蛋連蛋黃都有紀錄！"' + "]",
+                quote: "「雖然山坡地灌溉極難，但低密度放牧卻讓雞隻無比快樂，下出來的牧草蛋連蛋黃都有紀錄！」",
                 text: "坪頂社區地勢高且多丘陵，長期面臨水資源不足。傳統農業在這邊難以施展，社區一度沒落。但近年來，一群中高齡返鄉農民自組「鳳凰產銷班」，化地形劣勢為優勢。他們利用山坡高低差進行低密度自然放養，並以自家培育的狼尾草、牧草及益生菌作為飼料。更在林地中推行友善農法，保護台灣一級保育類動物——石虎的棲息地。他們的努力不僅獲得了「石虎友善標章」與 HACCP 雙認證，更透過平台的一期一會主題箱，把這一顆顆富含生態大愛、飽滿紮實的牧草益生蛋送往全台家庭，翻轉了乾旱社區的宿命。",
                 milestones: [
                     { year: "民國 102 年", event: "鳳凰產銷班成立" },
@@ -1231,7 +1216,6 @@
             }
         };
 
-        // OMO Spots Database with Google Maps coordinates (NEW INTEGRATED REDIRECT LINKS)
         const omoSpotsDb = {
             temple: {
                 title: "白沙屯拱天宮 OMO 節點",
@@ -1248,7 +1232,7 @@
             salt: {
                 title: "臺鹽通霄精鹽廠 OMO 節點",
                 scan: "精鹽廠為遊客家庭聚會重要觀光區。在鹽來館及海洋溫泉泡腳溪旁部署 OMO 節點，引導參觀者探索並訂閱包含通霄鹽滷豆花、越光米及新鮮茂谷柑的主題箱。",
-                comm: "利用實體精鹽廠的高大眾流量遊勢，吸引大量新會員綁定。線上回購佣金自動分潤，並共同開發精鹽廠專屬特產品。",
+                comm: "利用實體精鹽廠的高大眾流量優勢，吸引大量新會員綁定。線上回購佣金自動分潤，並共同開發精鹽廠專屬特產品。",
                 mapUrl: "https://www.google.com/maps/search/?api=1&query=臺鹽通霄精鹽廠"
             },
             trail: {
@@ -1465,14 +1449,14 @@
             `;
         }
 
-        // Artisan Story Switcher Logic
+        // Artisan Story Switcher Logic (修復 ClassList 與高亮狀態)
         function selectStory(storyId, tabElement) {
             selectedStoryId = storyId;
             const tabs = document.querySelectorAll('#storyTabs button');
             tabs.forEach(tab => {
-                tab.className = "story-tab p-5 bg-white border border-stone-200 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm";
+                tab.className = "story-tab p-5 bg-white border border-stone-200 text-stone-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm";
             });
-            tabElement.className = "story-tab p-5 bg-white rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm story-tab-active border-2";
+            tabElement.className = "story-tab p-5 bg-emerald-50 border-2 border-emerald-600 text-emerald-800 rounded-3xl flex items-center gap-4 hover:shadow-md transition-all text-left w-full shadow-sm shadow-emerald-50";
 
             const data = storiesDb[storyId];
             document.getElementById('storyAuthor').innerText = data.author;
@@ -1738,11 +1722,17 @@
         function openMemberModal() {
             const modal = document.getElementById('memberModal');
             const modalContent = document.getElementById('memberModalContent');
-            
+
+            // 修正：Modal 平時必須 hidden，否則透明遮罩仍可能蓋住整頁，造成連結無法點擊
+            modal.classList.remove('hidden');
             modal.classList.remove('pointer-events-none');
-            modal.classList.add('opacity-100');
-            modalContent.classList.remove('translate-y-4');
-            modalContent.classList.add('translate-y-0');
+            modal.classList.add('pointer-events-auto');
+
+            requestAnimationFrame(() => {
+                modal.classList.add('opacity-100');
+                modalContent.classList.remove('translate-y-4');
+                modalContent.classList.add('translate-y-0');
+            });
 
             if (!memberIsLoggedIn) {
                 generateCaptchaCode();
@@ -1752,11 +1742,19 @@
         function closeMemberModal() {
             const modal = document.getElementById('memberModal');
             const modalContent = document.getElementById('memberModalContent');
-            
-            modal.classList.add('pointer-events-none');
+
             modal.classList.remove('opacity-100');
+            modal.classList.remove('pointer-events-auto');
+            modal.classList.add('pointer-events-none');
             modalContent.classList.remove('translate-y-0');
             modalContent.classList.add('translate-y-4');
+
+            // 等淡出動畫結束後再 hidden，確保不再攔截任何點擊
+            setTimeout(() => {
+                if (!modal.classList.contains('opacity-100')) {
+                    modal.classList.add('hidden');
+                }
+            }, 300);
         }
 
         // HTML5 Canvas 圖形驗證碼生成引擎
@@ -1874,6 +1872,55 @@
             document.getElementById('captchaInput').value = '';
             generateCaptchaCode();
         }
+
+
+        /* --- 補強互動函式：避免 onclick 呼叫不存在函式時造成按鈕失效 --- */
+        if (typeof triggerAiRecipe !== 'function') {
+            function triggerAiRecipe() {
+                const result = document.getElementById('aiRecipeResult');
+                if (!result) return;
+                result.classList.remove('hidden');
+                result.innerText = '✨ AI 旬味食譜推薦：彩虹玉米可做成奶油烤玉米或玉米濃湯，搭配牧草蛋製成溫泉蛋沙拉，再以滴雞精作為湯底，形成兼具營養與在地風味的初夏餐桌。';
+            }
+        }
+
+        if (typeof triggerAiBlessing !== 'function') {
+            function triggerAiBlessing() {
+                const result = document.getElementById('aiBlessingResult');
+                if (!result) return;
+                result.classList.remove('hidden');
+                result.innerText = '願白沙屯媽祖護佑您一路平安，讓通霄土地的豐收與溫暖，隨這份農產主題箱抵達您的餐桌。';
+            }
+        }
+
+        if (typeof simulateShare !== 'function') {
+            function simulateShare(platform) {
+                const coupon = document.getElementById('couponResult');
+                if (coupon) coupon.classList.remove('hidden');
+            }
+        }
+
+        if (typeof processCheckout !== 'function') {
+            function processCheckout() {
+                goToStep(3);
+            }
+        }
+
+        if (typeof resetWizard !== 'function') {
+            function resetWizard() {
+                goToStep(1);
+            }
+        }
+
+        if (typeof generateArtisanAdCopy !== 'function') {
+            function generateArtisanAdCopy() {
+                const result = document.getElementById('aiArtisanAdResult');
+                if (!result) return;
+                result.classList.remove('hidden');
+                result.innerText = '【通霄旬味聯名提案】從在地職人的堅持出發，將安心農產與地方故事一起送上餐桌。這不只是購買一份產品，而是支持一座小鎮持續被看見。';
+            }
+        }
+
     </script>
 </body>
 </html>
